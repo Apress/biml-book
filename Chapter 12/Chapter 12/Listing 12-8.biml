@@ -1,0 +1,10 @@
+<#@ template language="VB" optionexplicit="False"#>
+<#@ import namespace="System.IO" #>
+<# 
+root = "C:\Temp\" 
+for each tableNode in RootNode.Tables 
+  File.WriteAllText (
+    root + tableNode.SchemaQualifiedName + ".sql", _
+    CallBimlScript("Callee.biml",tableNode)
+  )
+next #>

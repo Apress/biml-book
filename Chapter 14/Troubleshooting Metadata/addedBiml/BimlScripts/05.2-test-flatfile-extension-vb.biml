@@ -1,0 +1,14 @@
+﻿<#@ template language="VB" optionexplicit="False"#>
+<#@ code file="..\Code\FlatFileExtensionsVb.vb" #>
+<#@ import namespace="System.IO" #>
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <FileFormats>
+    <# for each file in Directory.Getfiles("C:\FlatFiles\Format") #>
+    <#= file.GetFlatFileFormatfromXml().GetBiml() #>
+    <# next #>
+  </FileFormats>
+</Biml>
+
+
+
+

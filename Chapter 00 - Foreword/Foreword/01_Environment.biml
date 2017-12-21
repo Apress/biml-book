@@ -1,0 +1,12 @@
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Connections>
+    <OleDbConnection Name="Target"
+ ConnectionString="Provider=SQLNCLI11;Server=(local);Initial Catalog=MyFirstBiml;Integrated Security=SSPI;" />
+    <OleDbConnection Name="AdventureWorks2014" ConnectionString="Provider=SQLNCLI11;Server=(local);Initial Catalog=AdventureWorks2014;Integrated Security=SSPI;"/>			  </Connections>
+  <Databases>
+    <Database Name="MyFirstBiml" ConnectionName="Target" />
+  </Databases>
+  <Schemas>
+    <Schema Name="dbo" DatabaseName="MyFirstBiml" />
+  </Schemas>
+</Biml>

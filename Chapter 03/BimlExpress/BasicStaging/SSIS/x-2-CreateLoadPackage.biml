@@ -1,0 +1,39 @@
+<#@ template tier="40" #>
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Packages>
+    <# foreach (var table in RootNode.Tables) { #>
+    <Package Name="Load_Staging_<#=table.Schema#>_<#=table.Name#>" ConstraintMode="Linear">
+      <Tasks>
+        <ExecuteSQL Name="Truncate_<#=table.Schema#>_<#=table.Name#>" ConnectionName="Target">
+            <DirectInput>TRUNCATE TABLE [<#=table.Schema#>].[<#=table.Name#>]</DirectInput>
+        </ExecuteSQL>
+        <Dataflow Name="DFT_Load_<#=table.Schema#>_<#=table.Name#>">
+          <Transformations>
+            <OleDbSource Name="DBS_<#=table.Schema#>_<#=table.Name#>" ConnectionName="Source">
+              <DirectInput>SELECT <#=table.GetColumnList(c => c.Name != "LoadDateTime")#> FROM [<#=table.Schema#>].[<#=table.Name#>]</DirectInput>
+            </OleDbSource>
+            <!-- Derived Columns Standard Values -->
+    		<DerivedColumns Name="DCT_StandardValues">
+    			<Columns>      
+    				<Column Name="LoadDateTime" DataType="DateTime2" Scale="7">(DT_DBTIMESTAMP2,7)GETDATE()</Column>
+    			</Columns>
+    		</DerivedColumns>
+            <OleDbDestination Name="DBD_<#=table.Schema#>_<#=table.Name#>" ConnectionName="Target">
+                <ExternalTableOutput Table="[<#=table.Schema#>].[<#=table.Name#>]"></ExternalTableOutput>
+            </OleDbDestination>
+          </Transformations>
+        </Dataflow>
+      </Tasks>
+    </Package>
+    <# } #>
+    <Package Name="Workflow_Load_Staging" ConstraintMode="Parallel">
+        <Tasks>
+            <# foreach (var table in RootNode.Tables) { #>
+            <ExecutePackage Name="EPT Load_Staging_<#=table.Schema#>_<#=table.Name#>">
+                <ExternalProjectPackage Package="Load_Staging_<#=table.Schema#>_<#=table.Name#>.dtsx"/>
+            </ExecutePackage>
+            <# } #>
+        </Tasks>
+    </Package>
+  </Packages>
+</Biml>

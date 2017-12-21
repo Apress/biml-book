@@ -1,0 +1,31 @@
+﻿<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Metadata>
+    <MetadataInstance Name="MD_Instance" MetadataModelName="MD_Model">
+      <Entities>
+        <Entity Name="Connections" MetadataModelEntityName="MD_Model.Connections">
+          <DataItems>
+            <DataItem Name="AW">
+              <Properties>
+                <Property PropertyName="MD_Model.Connections.ConnString">
+                  <Value>Provider=SQLNCLI11;Server=.;Initial Catalog=AdventureWorks2014;Integrated Security=SSPI;</Value>
+                </Property>
+                <Property PropertyName="MD_Model.Connections.IsSource">
+                  <Value>True</Value>
+                </Property>
+              </Properties>
+            </DataItem>
+          </DataItems>
+        </Entity>
+        <Entity Name="Tables" MetadataModelEntityName="MD_Model.Tables">
+          <DataItems>
+            <DataItem Name="Person">
+              <Relationships>
+                <Relationship RelationshipName="MD_Model.Tables.Connection" RelatedItemName="Connections.AW" />
+              </Relationships>
+            </DataItem>
+          </DataItems>
+        </Entity>
+      </Entities>
+    </MetadataInstance>
+  </Metadata>
+</Biml>

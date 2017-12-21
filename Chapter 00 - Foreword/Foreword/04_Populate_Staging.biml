@@ -1,0 +1,12 @@
+<#@ template tier="4" language="VB" #>
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Packages>
+    <Package Name="02_Populate Tables">
+      <Tasks>
+        <# for each table as AstTableNode in RootNode.Tables #>
+        <#=CallBimlScript("05_Populate_Table.biml", table) #>
+        <# next #>
+      </Tasks>
+    </Package> 
+  </Packages>
+</Biml>

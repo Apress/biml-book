@@ -1,0 +1,33 @@
+﻿<#@ template language="VB" optionexplicit="False"#>
+<#@ code file="..\Code\DataTableExtensionsVb.vb" #>
+<#@ import namespace="System.Data" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Tables>
+<#
+Using connection as new SqlConnection("Data Source=.;Integrated Security=SSPI;Initial Catalog=AdventureWorks2014")
+  connection.Open()
+  Dim command as new SqlCommand("SELECT TOP(1) * FROM [Person].[Person]
+    SELECT TOP(1) * FROM [Person].[Address]", connection)
+  Dim reader = command.ExecuteReader(CommandBehavior.KeyInfo)
+  While (reader.Read())
+    Dim dataTable = reader.GetSchemaTable()
+    dataTable.Columns("BaseSchemaName").ColumnName = "TABLE_SCHEMA"
+    dataTable.Columns("BaseTableName").ColumnName = "TABLE_NAME"
+    dataTable.Columns("ColumnName").ColumnName = "COLUMN_NAME"
+    dataTable.Columns("AllowDBNull").ColumnName = "IS_NULLABLE"
+    dataTable.Columns("DataTypeName").ColumnName = "DATA_TYPE"
+    dataTable.Columns("ColumnSize").ColumnName = "CHARACTER_MAXIMUM_LENGTH"
+    dataTable.Columns("NumericPrecision").ColumnName = "NUMERIC_PRECISION"
+    dataTable.Columns("NumericScale").ColumnName = "NUMERIC_SCALE"
+#>
+    <#=dataTable.ToAstTableNode().GetBiml()#>
+ <# reader.NextResult()
+  End While
+End Using
+#>
+  </Tables>
+</Biml>
+
+
+

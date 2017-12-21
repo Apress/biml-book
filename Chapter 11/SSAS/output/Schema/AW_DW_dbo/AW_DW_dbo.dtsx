@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DTS:Executable
+  DTS:CreationDate="08/19/2017 16:07:21"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="VAUL0001"
+  DTS:CreatorName="peter"
+  DTS:DTSID="{0C244640-2EC7-4D24-99D6-8EA4F288CD94}"
+  DTS:EnableConfig="True"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion=""
+  DTS:LocaleID="3081"
+  DTS:ObjectName="AW_DW_dbo"
+  DTS:ProtectionLevel="0"
+  DTS:refId="Package"
+  DTS:VersionBuild="0"
+  DTS:VersionGUID="{13FAC95B-6088-4476-B5DA-F054C9D9BE45}"
+  DTS:VersionMajor="0" xmlns:DTS="www.microsoft.com/SqlServer/Dts">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{33F64318-3D63-4E96-8BA5-19409CF48D76}"
+      DTS:ObjectName="AW_DWH"
+      DTS:refId="Package.ConnectionManagers[AW_DWH]">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="provider=SQLNCLI11;data source=.;integrated security=SSPI;initial catalog=AdventureWorksDW2014"></DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{5013F873-DAB4-4B10-B886-BA4D736D6741}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="dbo"
+      DTS:refId="Package\dbo"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="AW_DWH"
+          SQLTask:SqlStatementSource="&#xA;                            DECLARE @x nvarchar(4000);&#xA;                            SET @x = 'CREATE SCHEMA [dbo];';&#xA;                            IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = N'dbo')&#xA;                            EXEC(@x);&#xA;                    " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask"></SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:Configurations>
+    <DTS:Configuration
+      DTS:ConfigurationString="C:\PackageConfigurations\AW_DWH.dtsConfig"
+      DTS:ConfigurationType="1"
+      DTS:CreationName=""
+      DTS:DTSID="{55CE08CC-89EE-4C9F-BF21-0DF87F3BC051}"
+      DTS:ObjectName="AW_DWH"></DTS:Configuration>
+  </DTS:Configurations>
+</DTS:Executable>

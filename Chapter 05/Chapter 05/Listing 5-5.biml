@@ -1,0 +1,8 @@
+<ExecuteSQL Name="Log Rows" ConnectionName="Admin">
+  <DirectInput>INSERT INTO dbo.SSISLog (StartTime, PackageName, NewRows) VALUES (?, ?, ?)</DirectInput>
+  <Parameters>
+    <Parameter Name="0" VariableName="System.StartTime" DataType="DateTime2" Length="-1" />
+    <Parameter Name="1" VariableName="System.PackageName" DataType="AnsiString" Length="-1" />
+    <Parameter Name="2" VariableName="User.NewRows" DataType="AnsiString" Length="-1" />
+  </Parameters>
+</ExecuteSQL>

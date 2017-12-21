@@ -1,0 +1,34 @@
+
+<#
+  var includedSchemas = new List<string>{"Production", "Sales"};
+  var includedTables = new List<string>{"Product", "ProductCategory", "ProductSubcategory", "SalesOrderDetail", "SalesOrderHeader"};
+ 
+  var sourceConnection = SchemaManager.CreateConnectionNode("AW2014", "Data Source=.;Initial Catalog=AdventureWorks2014;Provider=SQLNCLI11;Integrated Security=SSPI;");
+
+
+  var sourceMetadata = sourceConnection.GetDatabaseSchema(includedSchemas, includedTables, ImportOptions.ExcludeCheckConstraint | ImportOptions.ExcludeColumnDefault | ImportOptions.ExcludeForeignKey | ImportOptions.ExcludeIdentity | ImportOptions.ExcludeIndex | ImportOptions.ExcludePrimaryKey | ImportOptions.ExcludeUniqueKey | ImportOptions.ExcludeViews);
+#>
+<#*
+
+  /* If you prefer to create the lists inline, you can use the following code instead: */
+  
+  var sourceMetadata = sourceConnection.GetDatabaseSchema(new List<string>{"Production", "Sales"}, new List<string>{"Product", "ProductCategory", "ProductSubcategory", "SalesOrderDetail", "SalesOrderHeader"}, ImportOptions.ExcludeCheckConstraint | ImportOptions.ExcludeColumnDefault | ImportOptions.ExcludeForeignKey | ImportOptions.ExcludeIdentity | ImportOptions.ExcludeIndex | ImportOptions.ExcludePrimaryKey | ImportOptions.ExcludeUniqueKey | ImportOptions.ExcludeViews);	
+*#>
+    
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Connections>
+    <OleDbConnection Name="Staging" ConnectionString="Data Source=.;Initial Catalog=Staging;Provider=SQLNCLI11;Integrated Security=SSPI;" />
+  </Connections>
+  <Packages>
+    <Package Name="DropAndCreateStagingTables">
+      <Tasks>
+        <# foreach (var tbl in sourceMetadata.TableNodes) { #>
+        <ExecuteSQL Name="Drop and Create <#=tbl.Schema#> <#= tbl.Name#>" ConnectionName="Staging">
+          <DirectInput><#= tbl.GetDropAndCreateDdl()#></DirectInput>
+        </ExecuteSQL>
+        <# } #>
+                
+      </Tasks>
+    </Package>
+  </Packages>  
+</Biml>

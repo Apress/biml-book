@@ -1,0 +1,20 @@
+﻿<#@ code file="..\Code\DataTableExtensions.cs" #>
+<#@ import namespace="System.Data" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+<#
+var dataTable = new DataTable(null);
+using (var connection = new SqlConnection("Server=localhost;Initial Catalog=AdventureWorks2014;Integrated Security=SSPI;"))
+{
+  connection.Open();
+  var restrictions = new string[] { null, null, "Person", null }; 
+  dataTable = connection.GetSchema("Columns", restrictions);
+  dataTable.DefaultView.Sort = "ORDINAL_POSITION ASC";
+}
+#>
+<#	if (dataTable != null) { #>
+  <Tables>
+	<#=dataTable.ToAstTableNode().GetBiml()#>
+  </Tables>
+<#	} #>
+</Biml>

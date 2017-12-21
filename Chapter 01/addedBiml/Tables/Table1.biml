@@ -1,0 +1,9 @@
+﻿<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+    <Tables>
+        <Table Name="Table1" SchemaName="">
+    <AnalysisMetadata>
+        <Tabular Name="BimlTable" />
+    </AnalysisMetadata>
+</Table>
+    </Tables>
+</Biml>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DTS:Executable
+  DTS:CreationDate="08/20/2017 08:35:50"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="VAUL0001"
+  DTS:CreatorName="peter"
+  DTS:DTSID="{9F968803-838D-4173-B66F-92D35D1BFA2A}"
+  DTS:EnableConfig="True"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion=""
+  DTS:LocaleID="3081"
+  DTS:ObjectName="AdventureWorksDW_dbo_DimCurrency"
+  DTS:ProtectionLevel="0"
+  DTS:refId="Package"
+  DTS:VersionBuild="0"
+  DTS:VersionGUID="{09799B1C-F396-402B-BCE2-A694C3DFF583}"
+  DTS:VersionMajor="0" xmlns:DTS="www.microsoft.com/SqlServer/Dts">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{F8CE885A-E233-4E77-9DF8-C3D07C888F8F}"
+      DTS:ObjectName="AdventureWorksDW"
+      DTS:refId="Package.ConnectionManagers[AdventureWorksDW]">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="provider=SQLNCLI11;data source=localhost;initial catalog=AdventureWorksDW2014;integrated security=SSPI"></DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{28A54A67-2896-43BA-9034-540A8004D20A}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="__Table_DDL_dbo_DimCurrency"
+      DTS:refId="Package\__Table_DDL_dbo_DimCurrency"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="AdventureWorksDW"
+          SQLTask:SqlStatementSource="&#xA;                            SET ANSI_NULLS ON&#xA;SET QUOTED_IDENTIFIER ON&#xA;GO&#xA;&#xA;-------------------------------------------------------------------&#xA;IF EXISTS (SELECT * from sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DimCurrency]') AND type IN (N'U'))&#xA;DROP TABLE [dbo].[DimCurrency]&#xA;GO&#xA;&#xA;CREATE TABLE [dbo].[DimCurrency]&#xA;(&#xA;-- Columns Definition&#xA; [CurrencyKey] int IDENTITY(1,1) NOT NULL &#xA;, [CurrencyName] nvarchar(50) NOT NULL &#xA;&#xA;-- Constraints&#xA;,CONSTRAINT [PK_DimCurrency_CurrencyKey] PRIMARY KEY CLUSTERED&#xA;(&#xA;  [CurrencyKey] Asc) WITH(PAD_INDEX = OFF,IGNORE_DUP_KEY = OFF) ON &quot;default&quot;&#xA;&#xA;)&#xA;ON &quot;default&quot;&#xA;WITH (DATA_COMPRESSION = NONE)&#xA;GO&#xA;&#xA;-------------------------------------------------------------------&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;                        " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask"></SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:Configurations>
+    <DTS:Configuration
+      DTS:ConfigurationString="C:\PackageConfigurations\AdventureWorksDW.dtsConfig"
+      DTS:ConfigurationType="1"
+      DTS:CreationName=""
+      DTS:DTSID="{55AC2C31-3E29-43EE-A06A-B1B54F66584C}"
+      DTS:ObjectName="AdventureWorksDW"></DTS:Configuration>
+  </DTS:Configurations>
+</DTS:Executable>

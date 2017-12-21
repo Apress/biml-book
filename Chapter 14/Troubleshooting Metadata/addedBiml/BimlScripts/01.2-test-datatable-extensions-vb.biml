@@ -1,0 +1,30 @@
+﻿<#@ template language="VB" optionexplicit="False"#>
+<#@ code file="..\Code\DataTableExtensionsVb.vb" #>
+<#@ import namespace="System.Data" #>
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+<#
+Dim table = "Person"
+Dim connection = "Provider=SQLNCLI11;Server=localhost;Initial Catalog=AdventureWorks2014;Integrated Security=SSPI"
+Dim dataTable as DataTable = ExternalDataAccess.GetDataTable(connection, "
+SELECT c.TABLE_SCHEMA
+      ,c.TABLE_NAME
+      ,c.COLUMN_NAME
+      ,c.IS_NULLABLE
+      ,c.DATA_TYPE
+      ,c.CHARACTER_MAXIMUM_LENGTH
+      ,c.NUMERIC_PRECISION
+      ,c.NUMERIC_SCALE
+FROM INFORMATION_SCHEMA.COLUMNS c
+LEFT OUTER JOIN INFORMATION_SCHEMA.TABLES t
+	ON c.TABLE_CATALOG = t.TABLE_CATALOG
+	AND c.TABLE_SCHEMA = t.TABLE_SCHEMA
+	AND c.TABLE_NAME = t.TABLE_NAME
+WHERE t.TABLE_NAME = '" + table + "'
+ORDER BY c.TABLE_SCHEMA ASC,
+         c.TABLE_NAME ASC
+")
+#>
+    <Tables>
+        <#=dataTable.ToAstTableNode().GetBiml()#>
+    </Tables>
+</Biml>

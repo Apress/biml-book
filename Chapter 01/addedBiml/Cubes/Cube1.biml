@@ -1,0 +1,5 @@
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+    <Cubes>
+        <Cube Name="Cube1" ConnectionName="" />
+    </Cubes>
+</Biml>

@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <IsPackageEditorCompactDisplayModeEnabled>False</IsPackageEditorCompactDisplayModeEnabled>
+    <IsTemplateAutoUpdatePreviewEnabled>False</IsTemplateAutoUpdatePreviewEnabled>
+    <IsTemplateCheckBimlSyntaxEnabled>True</IsTemplateCheckBimlSyntaxEnabled>
+    <IsTemplateAutoFormatXmlEnabled>True</IsTemplateAutoFormatXmlEnabled>
+    <IsBuildDocumentationEnabled>False</IsBuildDocumentationEnabled>
+    <DebugBundles />
+    <AddedXmlFilesPath>addedBiml</AddedXmlFilesPath>
+    <CompilationOutputPath>output</CompilationOutputPath>
+    <DocumentationOutputPath>documentation</DocumentationOutputPath>
+    <IsWarnAsErrorEnabled>False</IsWarnAsErrorEnabled>
+    <WarningLevel>4</WarningLevel>
+    <IsCleanOutputFolderEnabled>False</IsCleanOutputFolderEnabled>
+    <IsCleanDocumentationFolderEnabled>False</IsCleanDocumentationFolderEnabled>
+    <SqlVersion>SqlServer2014</SqlVersion>
+    <SsasVersion>Ssas2014</SsasVersion>
+    <SsasTabularVersion>SsasTabular2016</SsasTabularVersion>
+    <SsisVersion>Ssis2014</SsisVersion>
+    <UseProjectDeploymentModel>True</UseProjectDeploymentModel>
+    <ExtraCommandLineOptions />
+    <IsAutoUpdateDocumentationPreviewEnabled>True</IsAutoUpdateDocumentationPreviewEnabled>
+    <EmitDocumentationAnnotations>True</EmitDocumentationAnnotations>
+    <EmitCodeCommentAnnotations>False</EmitCodeCommentAnnotations>
+    <EmitTagAnnotations>False</EmitTagAnnotations>
+    <EmitEmittableAssets>True</EmitEmittableAssets>
+    <EmitIncludeAssets>True</EmitIncludeAssets>
+    <DefaultConnectionName />
+    <LoweringTemplateConfigurationPath />
+    <SelectedConfigurationFilePath />
+    <SelectedFrameworkFilePath />
+    <SelectedBimlDocSettingsFilePath />
+    <SelectedBimlDocTemplateFilePath />
+    <BimlStudioVersion>5.0.61924.0</BimlStudioVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <RootFolder Include=" ">
+      <RootFolderId>0</RootFolderId>
+    </RootFolder>
+  </ItemGroup>
+  <ItemGroup>
+    <Live Include="addedBiml\BimlScripts\00-environment.biml">
+      <RootFolderId>0</RootFolderId>
+    </Live>
+    <None Include="addedBiml\Code\DataTableExtensions.cs">
+      <RootFolderId>0</RootFolderId>
+    </None>
+    <None Include="addedBiml\Code\DataTableExtensionsVb.vb">
+      <RootFolderId>0</RootFolderId>
+    </None>
+    <None Include="addedBiml\Code\FlatFileExtensions.cs">
+      <RootFolderId>0</RootFolderId>
+    </None>
+    <None Include="addedBiml\Code\FlatFileExtensionsVb.vb">
+      <RootFolderId>0</RootFolderId>
+    </None>
+    <None Include="addedBiml\Other\PersonPhone.xml">
+      <RootFolderId>0</RootFolderId>
+    </None>
+    <None Include="Troubleshooting Metadata.bimlproj">
+      <RootFolderId>0</RootFolderId>
+    </None>
+    <Reference Include="addedBiml\BimlScripts\01.1-test-datatable-extensions-cs.biml">
+      <RootFolderId>0</RootFolderId>
+    </Reference>
+    <Reference Include="addedBiml\BimlScripts\01.2-test-datatable-extensions-vb.biml">
+      <RootFolderId>0</RootFolderId>
+    </Reference>
+    <Reference Include="addedBiml\BimlScripts\02.1-test-describe-first-cs.biml">
+      <RootFolderId>0</RootFolderId>
+    </Reference>
+    <Reference Include="addedBiml\BimlScripts\02.2-test-describe-first-vb.biml">
+      <RootFolderId>0</RootFolderId>
+    </Reference>
+    <Reference Include="addedBiml\BimlScripts\03.1-test-getschema-cs.biml">
+      <RootFolderId>0</RootFolderId>
+    </Reference>
+    <Reference Include="addedBiml\BimlScripts\03.2-test-getschema-vb.biml">
+      <RootFolderId>0</RootFolderId>
+    </Reference>
+    <Reference Include="addedBiml\BimlScripts\04.1-test-getschematable-cs.biml">
+      <RootFolderId>0</RootFolderId>
+    </Reference>
+    <Reference Include="addedBiml\BimlScripts\04.2-test-getschematable-vb.biml">
+      <RootFolderId>0</RootFolderId>
+    </Reference>
+    <Reference Include="addedBiml\BimlScripts\05.1-test-flatfile-extension-cs.biml">
+      <RootFolderId>0</RootFolderId>
+    </Reference>
+    <Reference Include="addedBiml\BimlScripts\05.2-test-flatfile-extension-vb.biml">
+      <RootFolderId>0</RootFolderId>
+    </Reference>
+  </ItemGroup>
+</Project>

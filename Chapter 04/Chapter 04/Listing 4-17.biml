@@ -1,0 +1,16 @@
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Packages>
+    <Package Name="Load FF">
+      <Tasks>
+        <Dataflow Name="Load My Flatfile">
+          <Transformations>
+            <FlatFileSource ConnectionName="MyFlatFile" Name="MyFlatFile"/>
+            <OleDbDestination Name="Dest" ConnectionName="Target">
+              <TableOutput TableName="MyBiml_Flatfiles.dbo.TBL_MyFlatFile" />
+            </OleDbDestination>
+          </Transformations>
+        </Dataflow>
+      </Tasks>
+    </Package>
+  </Packages>
+</Biml>

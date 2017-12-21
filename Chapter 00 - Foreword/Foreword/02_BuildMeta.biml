@@ -1,0 +1,33 @@
+<#@ template language="VB" tier="2" #>
+<#@ import namespace="System.Data" #>
+<# 
+dim targetConnection as AstDbConnectionNode = RootNode.Connections("Target") 
+dim SrcConn as AstDbConnectionNode = RootNode.Connections("AdventureWorks2014") 
+Dim ImportTables As new List(of String) 
+ #>
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Tables>
+<# Dim DT as DataTable = ExternalDataAccess.GetDataTable(targetConnection.ConnectionString, "SELECT  [TableName]  FROM [MyBimlMeta_Tables]")
+
+for each dr as datarow In dt.rows
+  ImportTables.add(dr.item(0).ToString())
+Next
+
+dim ImportResult as ImportResults = srcconn.GetDatabaseSchema(nothing,ImportTables,ImportOptions.ExcludeIdentity or ImportOptions.ExcludeForeignKey) 
+	
+    for each table as AstTableNode in ImportResult.TableNodes #>
+    <Table Name="<#= srcconn.name #>_<#=table.Schema.Name#>_<#=table.Name#>" SchemaName="MyFirstBiml.dbo">
+      <Columns>
+	<# for each column as AstTableColumnBaseNode in table.Columns   #>
+        <#=column.GetBiml()#>
+	<# next #>
+      </Columns>
+      <Annotations>
+        <Annotation AnnotationType="Tag" Tag="SourceSchemaQualifiedName">
+          <#=table.SchemaQualifiedName#>
+        </Annotation>			
+      </Annotations>
+    </Table>
+    <# next #>
+  </Tables>
+</Biml>

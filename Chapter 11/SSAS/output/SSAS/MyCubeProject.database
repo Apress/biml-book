@@ -1,0 +1,7 @@
+<Database xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+    <ID>MyCubeProject</ID>
+    <Name>MyCubeProject</Name>
+    <DataSourceImpersonation />
+    <CreatedTimestamp>2017-08-20T08:35:50</CreatedTimestamp>
+    <LastSchemaUpdate>2017-08-20T08:35:50</LastSchemaUpdate>
+</Database>

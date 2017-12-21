@@ -1,0 +1,64 @@
+<#@ template tier="999"#>
+<#@ include file="params.biml" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.IO" #>
+<#
+StringBuilder sb = new StringBuilder();
+int executionOrder = 0;
+
+sb.AppendLine("If Not Exists(Select a.ApplicationName");
+sb.AppendLine("  From custom.Applications a ");
+sb.AppendLine("  Where a.ApplicationName = '" + SSISFrameworkApplicationName + "')");
+sb.AppendLine(" begin");
+sb.AppendLine("  Insert Into custom.Applications(ApplicationName)");
+sb.AppendLine("  Values('" + SSISFrameworkApplicationName + "')");
+sb.AppendLine(" end");
+
+sb.AppendLine(" declare @applicationID int = (Select a.ApplicationID");
+sb.AppendLine("  From custom.Applications a ");
+sb.AppendLine("  Where a.ApplicationName = '" + SSISFrameworkApplicationName + "')");
+sb.AppendLine(" declare @packageID int");
+
+foreach(var package in RootNode.Packages) {
+    executionOrder += 10;
+    sb.AppendLine("If Not Exists(Select p.PackageName");
+    sb.AppendLine("  From custom.Packages p ");
+    sb.AppendLine("  Where p.PackageName = '" + package.Name + ".dtsx' ");
+    sb.AppendLine("    And p.ProjectName = 'BimlBookChapter12' ");
+    sb.AppendLine("    And p.FolderName = '" + SSISCatalogFolderName + "')");
+    sb.AppendLine(" begin");
+    sb.AppendLine("  Insert Into custom.Packages ");
+    sb.AppendLine(" (PackageName, ProjectName, FolderName)");
+    sb.AppendLine("  Values('" + package.Name + ".dtsx' ");
+    sb.AppendLine("  , 'BimlBookChapter12', '" + SSISCatalogFolderName + "') ");
+    sb.AppendLine(" end");
+    sb.AppendLine(" Set @packageID = (Select p.PackageID");
+    sb.AppendLine("  From custom.Packages p ");
+    sb.AppendLine("  Where p.PackageName = '" + package.Name + ".dtsx' ");
+    sb.AppendLine("    And p.ProjectName = 'BimlBookChapter12' ");
+    sb.AppendLine("    And p.FolderName = '" + SSISCatalogFolderName + "')");
+    sb.AppendLine("If Not Exists(Select ap.ApplicationPackageID");
+    sb.AppendLine("  From custom.ApplicationPackages ap ");
+    sb.AppendLine("  Join custom.Packages p On p.PackageID = ap.PackageID ");
+    sb.AppendLine("  Join custom.Applications a On a.ApplicationID = ap.ApplicationID ");
+    sb.AppendLine("  Where p.PackageName = '" + package.Name + ".dtsx' ");
+    sb.AppendLine("    And p.ProjectName = 'BimlBookChapter12' ");
+    sb.AppendLine("    And p.FolderName = '" + SSISCatalogFolderName + "' ");
+    sb.AppendLine("    And a.ApplicationID = @applicationID ");
+    sb.AppendLine("    And ap.ExecutionOrder = " + executionOrder + ") ");
+    sb.AppendLine(" begin");
+    sb.AppendLine("  Insert Into custom.ApplicationPackages ");
+    sb.AppendLine(" (ApplicationID, PackageID, ExecutionOrder, FailApplicationOnPackageFailure)");
+    sb.AppendLine("  Values(@applicationID ");
+    sb.AppendLine("  , @packageID, " + executionOrder + ", 1) ");
+    sb.AppendLine(" end");
+    sb.AppendLine("Set @packageID = -1;");
+}
+
+using (StreamWriter outfile = new StreamWriter(SSISFrameworkMetadataFileName))
+	{
+            outfile.Write(sb.ToString());
+    }
+#>
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+</Biml>

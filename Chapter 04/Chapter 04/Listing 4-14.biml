@@ -1,0 +1,12 @@
+<#@ template language="VB" optionexplicit="False"#>
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Tables>
+    <# 
+     Dim XLS = RootNode.Connections("MyExcel")
+     Dim ImportResult = XLS.GetDatabaseSchema()
+     for each tbl in ImportResult.TableNodes
+       tbl.Schema = RootNode.Schemas(0)#>
+       <#= tbl.GetBiml() #>
+     <# next #>
+  </Tables>
+</Biml>

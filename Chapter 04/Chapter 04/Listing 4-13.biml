@@ -1,0 +1,11 @@
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Tables>
+    <#
+     var xls = RootNode.Connections["MyExcel"];
+     var ImportResult = xls.GetDatabaseSchema();
+     foreach (var tbl in ImportResult.TableNodes) { 
+       tbl.Schema = RootNode.Schemas[0];#>
+       <#= tbl.GetBiml() #>
+    <# } #>
+  </Tables>
+</Biml>

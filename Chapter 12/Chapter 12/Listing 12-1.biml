@@ -1,0 +1,3 @@
+<# foreach (var tableNode in RootNode.Tables) { #>
+  <#=tableNode.GetDropAndCreateDdl()#> 
+<# } #>

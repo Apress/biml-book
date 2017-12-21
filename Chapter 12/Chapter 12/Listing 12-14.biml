@@ -1,0 +1,14 @@
+<#@ template language="VB" optionexplicit="False" #>
+<# for each t in Rootnode.connections("CheckDB").GetDatabaseSchema.tablenodes.where(function(c) c.indexes.count > 1) 
+Dim visitedList As New List (Of AstTableIndexNode)
+  For Each idx In t.indexes 
+    If Not visitedList.Contains(idx)Then
+      visitedList.Add(idx)
+      For Each CompareIdx In t.indexes.where(Function(c) Not visitedList.Contains(c) and c.Columns.orderby(function(o) o.Column.name).getbiml= idx.Columns.orderby(function(o) o.Column.name).getbiml ) 
+        visitedList.Add(CompareIdx)#>                             
+Table: <#= t.name #> / <#= idx.name #> and <#= CompareIdx.name #> reference the same columns<# if idx.columns.GetBiml = CompareIdx.Columns.GetBiml then #> in the same order <# end if#>
+
+<# Next
+    End If
+  Next  
+next #>

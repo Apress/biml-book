@@ -1,0 +1,29 @@
+﻿<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Tables>
+    <Table Name="DimCurrency" SchemaName="AdventureWorksDW.dbo" FriendlyName="Source Currency">
+      <Columns>
+        <Column Name="CurrencyKey" />
+        <Column Name="CurrencyName" DataType="String" Length="50" />
+      </Columns>
+      <Keys>
+        <Identity Name="PK_DimCurrency_CurrencyKey">
+          <Columns>
+            <Column ColumnName="CurrencyKey" />
+          </Columns>
+        </Identity>
+      </Keys>
+      <AnalysisMetadata>
+        <Dimension Name="Currency" DimensionType="Currency">
+          <Attributes>
+            <Attribute Name="Currency" Usage="Key" AttributeType="CurrencyIsoCode" OrderBy="Name">
+              <KeyColumns>
+                <KeyColumn ColumnName="CurrencyKey" />
+              </KeyColumns>
+              <NameColumn ColumnName="CurrencyName" />
+            </Attribute>
+          </Attributes>
+        </Dimension>
+      </AnalysisMetadata>
+    </Table>
+  </Tables>
+</Biml>

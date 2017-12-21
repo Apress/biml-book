@@ -1,0 +1,23 @@
+
+<#@ template language="VB" optionexplicit="False" #>
+<#
+  Dim includedSchemas as new List(of String) from { "Production" }
+  Dim includedTables as new List(of String) from {"Product", "ProductCategory", "ProductSubcategory"}
+
+  Dim sourceConnection = RootNode.OleDbConnections("AW2014")
+
+  Dim sourceMetadata = sourceConnection.GetDatabaseSchema(RootNode.Databases("Staging"), includedSchemas, includedTables, ImportOptions.ExcludeCheckConstraint or ImportOptions.ExcludeColumnDefault or ImportOptions.ExcludeForeignKey or ImportOptions.ExcludeIdentity or ImportOptions.ExcludeIndex or ImportOptions.ExcludePrimaryKey or ImportOptions.ExcludeUniqueKey or ImportOptions.ExcludeViews, true, nothing)
+#>
+
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Schemas>
+    <# for each schema in sourceMetadata.SchemaNodes #>
+      <#=schema.GetBiml()#>
+    <# next #>
+  </Schemas>
+  <Tables>
+    <# for each tbl in sourceMetadata.TableNodes #>
+      <#= tbl.GetBiml()#>
+    <# next #>
+  </Tables>
+</Biml>

@@ -1,0 +1,17 @@
+<#@ template tier="10" #>
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Connections>
+    <OleDbConnection Name="Source" ConnectionString="Provider=SQLNCLI11;Server=localhost\DEV2016;Initial Catalog=AdventureWorks2014;Integrated Security=SSPI;" CreateInProject="true" />
+    <OleDbConnection Name="Target" ConnectionString="Provider=SQLNCLI11;Server=localhost\DEV2016;Initial Catalog=Staging;Integrated Security=SSPI;" CreateInProject="true" />
+  </Connections>
+  <Databases>
+    <Database Name="Staging" ConnectionName="Target" />
+  </Databases>
+  <Schemas>
+    <Schema Name="HumanResources" DatabaseName="Staging" />
+    <Schema Name="Person" DatabaseName="Staging" />
+    <Schema Name="Production" DatabaseName="Staging" />
+    <Schema Name="Purchasing" DatabaseName="Staging" />
+    <Schema Name="Sales" DatabaseName="Staging" />
+  </Schemas>
+</Biml>

@@ -1,0 +1,82 @@
+﻿<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Tables>
+    <Table Name="DimEmployee" SchemaName="AdventureWorksDW.dbo">
+      <Columns>
+        <Column Name="EmployeeKey" DataType="Int32" IsNullable="false" />
+        <Column Name="ParentEmployeeKey" DataType="Int32" IsNullable="true" />
+        <Column Name="EmployeeNationalIDAlternateKey" DataType="String" Length="15" IsNullable="true" />
+        <Column Name="ParentEmployeeNationalIDAlternateKey" DataType="String" Length="15" IsNullable="true" />
+        <Column Name="SalesTerritoryKey" DataType="Int32" IsNullable="true" />
+        <Column Name="FirstName" DataType="String" Length="50" IsNullable="false" />
+        <Column Name="LastName" DataType="String" Length="50" IsNullable="false" />
+        <Column Name="MiddleName" DataType="String" Length="50" IsNullable="true" />
+        <Column Name="NameStyle" DataType="Boolean" IsNullable="false" />
+        <Column Name="Title" DataType="String" Length="50" IsNullable="true" />
+        <Column Name="HireDate" DataType="Date" IsNullable="true" />
+        <Column Name="BirthDate" DataType="Date" IsNullable="true" />
+        <Column Name="LoginID" DataType="String" Length="256" IsNullable="true" />
+        <Column Name="EmailAddress" DataType="String" Length="50" IsNullable="true" />
+        <Column Name="Phone" DataType="String" Length="25" IsNullable="true" />
+        <Column Name="MaritalStatus" DataType="StringFixedLength" Length="1" IsNullable="true" />
+        <Column Name="EmergencyContactName" DataType="String" Length="50" IsNullable="true" />
+        <Column Name="EmergencyContactPhone" DataType="String" Length="25" IsNullable="true" />
+        <Column Name="SalariedFlag" DataType="Boolean" IsNullable="true" />
+        <Column Name="Gender" DataType="StringFixedLength" Length="1" IsNullable="true" />
+        <Column Name="PayFrequency" DataType="Byte" IsNullable="true" />
+        <Column Name="BaseRate" DataType="Currency" IsNullable="true" />
+        <Column Name="VacationHours" DataType="Int16" IsNullable="true" />
+        <Column Name="SickLeaveHours" DataType="Int16" IsNullable="true" />
+        <Column Name="CurrentFlag" DataType="Boolean" IsNullable="false" />
+        <Column Name="SalesPersonFlag" DataType="Boolean" IsNullable="false" />
+        <Column Name="DepartmentName" DataType="String" Length="50" IsNullable="true" />
+        <Column Name="StartDate" DataType="Date" IsNullable="true" />
+        <Column Name="EndDate" DataType="Date" IsNullable="true" />
+        <Column Name="Status" DataType="String" Length="50" IsNullable="true" />
+        <Column Name="EmployeePhoto" DataType="Binary" Length="-1" IsNullable="true" />
+      </Columns>
+      <AnalysisMetadata>
+        <Tabular Name="DimEmployee" AutoCreateSinglePartition="true" AutoCreateColumns="true" >
+          <Columns>
+            <Column Name="EmployeeKey" SourceColumnName="EmployeeKey" IsHidden="true"/>
+            <Column Name="ParentEmployeeKey" SourceColumnName="ParentEmployeeKey" IsHidden="true" />
+            <Column Name="EmployeeNationalIDAlternateKey" SourceColumnName="EmployeeNationalIDAlternateKey" IsHidden="true" />
+            <Column Name="ParentEmployeeNationalIDAlternateKey" SourceColumnName="ParentEmployeeNationalIDAlternateKey" IsHidden="true" />
+            <Column Name="SalesTerritoryKey" SourceColumnName="SalesTerritoryKey" />
+            <Column Name="FirstName" SourceColumnName="FirstName" />
+            <Column Name="LastName" SourceColumnName="LastName" />
+            <Column Name="MiddleName" SourceColumnName="MiddleName" />
+            <Column Name="NameStyle" SourceColumnName="NameStyle" />
+            <Column Name="Title" SourceColumnName="Title" />
+            <Column Name="HireDate" SourceColumnName="HireDate" />
+            <Column Name="BirthDate" SourceColumnName="BirthDate" />
+            <Column Name="LoginID" SourceColumnName="LoginID" />
+            <Column Name="EmailAddress" SourceColumnName="EmailAddress" />
+            <Column Name="Phone" SourceColumnName="Phone" />
+            <Column Name="MaritalStatus" SourceColumnName="MaritalStatus" />
+            <Column Name="EmergencyContactName" SourceColumnName="EmergencyContactName" />
+            <Column Name="EmergencyContactPhone" SourceColumnName="EmergencyContactPhone" />
+            <Column Name="SalariedFlag" SourceColumnName="SalariedFlag" />
+            <Column Name="Gender" SourceColumnName="Gender" />
+            <Column Name="PayFrequency" SourceColumnName="PayFrequency" />
+            <Column Name="BaseRate" SourceColumnName="BaseRate" />
+            <Column Name="VacationHours" SourceColumnName="VacationHours" />
+            <Column Name="SickLeaveHours" SourceColumnName="SickLeaveHours" />
+            <Column Name="CurrentFlag" SourceColumnName="CurrentFlag" />
+            <Column Name="SalesPersonFlag" SourceColumnName="SalesPersonFlag" />
+            <Column Name="DepartmentName" SourceColumnName="DepartmentName" />
+            <Column Name="StartDate" SourceColumnName="StartDate" />
+            <Column Name="EndDate" SourceColumnName="EndDate" />
+            <Column Name="Status" SourceColumnName="Status" />
+          </Columns>
+        </Tabular>
+      </AnalysisMetadata>
+      <Keys>
+        <PrimaryKey Name="PK_DimEmployee">
+          <Columns>
+            <Column ColumnName="EmployeeKey" />
+          </Columns>
+        </PrimaryKey>
+      </Keys>
+    </Table>
+  </Tables>
+</Biml>

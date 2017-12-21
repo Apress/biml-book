@@ -1,0 +1,31 @@
+<#@ template tier="20"#>
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+    <Packages>
+    <#
+    string sourceConnection = "ContosoSource";
+    string targetConnection = "ContosoTarget";
+    string sourceTable = "";
+    AstTableNode srcTable;
+	string patternName = "";
+	string packagesBiml = "";
+    foreach(AstTableNode tgtTable in RootNode.Tables.Where(t => t.Schema.Database.Connection.Name == targetConnection)) {
+        sourceTable = tgtTable.GetTag("MappedTableName");
+        srcTable = RootNode.Tables[sourceTable];
+		patternName = tgtTable.GetTag("PatternName");
+		string scriptName = patternName + ".biml";
+		switch(patternName) {
+			case "InstrumentedNewOnly":
+				packagesBiml += CallBimlScript(patternName + ".biml", sourceConnection, targetConnection, sourceTable, srcTable, tgtTable);
+				break;
+			case "IncrementalLoad":
+				packagesBiml += CallBimlScript(patternName + ".biml", sourceConnection, targetConnection, sourceTable, srcTable, tgtTable);
+				break;
+        }
+        #>
+        <#=#>
+    <#
+    } // foreach tgtTable
+    #>
+		<#=packagesBiml #>
+    </Packages>
+</Biml>

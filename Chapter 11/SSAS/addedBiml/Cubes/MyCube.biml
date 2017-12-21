@@ -1,0 +1,27 @@
+﻿<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Cubes>
+    <Cube Name="MyCube" ConnectionName="AW_Cube">
+      <CubeMeasureGroups>
+        <CubeMeasureGroup Name="Internet Sales" FactName="AdventureWorksDW.dbo.FactInternetSales.Internet Sales">
+          <CubeDimensionBindings>
+            <CubeDimensionBinding CubeDimensionName="Order Date" FactColumnName="AdventureWorksDW.dbo.FactInternetSales.OrderDateKey" />
+            <CubeDimensionBinding CubeDimensionName="Ship Date" FactColumnName="AdventureWorksDW.dbo.FactInternetSales.ShipDateKey" />
+            <CubeDimensionBinding CubeDimensionName="Currency" FactColumnName="AdventureWorksDW.dbo.FactInternetSales.CurrencyKey" />
+            <CubeDimensionBinding CubeDimensionName="Sales Territory" FactColumnName="AdventureWorksDW.dbo.FactInternetSales.SalesTerritoryKey" />
+          </CubeDimensionBindings>
+          <Partitions>
+            <Partition Name="Internet Sales Partition">
+              <DsvTableSource ConnectionName="AdventureWorksDW" TableName="AdventureWorksDW.dbo.FactInternetSales" />
+            </Partition>
+          </Partitions>
+        </CubeMeasureGroup>
+      </CubeMeasureGroups>
+      <CubeDimensions>
+        <CubeDimension Name="Currency" DimensionName="AdventureWorksDW.dbo.DimCurrency.Currency" />
+        <CubeDimension Name="Order Date" DimensionName="AdventureWorksDW.dbo.DimDate.Date" />
+        <CubeDimension Name="Ship Date" DimensionName="AdventureWorksDW.dbo.DimDate.Date" />
+        <CubeDimension Name="Sales Territory" DimensionName="AdventureWorksDW.dbo.DimSalesTerritory.Sales Territory" />
+      </CubeDimensions>
+    </Cube>
+  </Cubes>
+</Biml>

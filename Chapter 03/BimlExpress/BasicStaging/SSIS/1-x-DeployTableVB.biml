@@ -1,0 +1,14 @@
+<#@ template tier="30" language="VB" optionexplicit="False" #>
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+	<Packages>
+		<Package Name="DeployTable" ConstraintMode="Parallel">
+			<Tasks>
+				<# for each tbl in RootNode.Tables #>
+				<ExecuteSQL Name="Create <#=tbl.Name#>" ConnectionName="Target">
+					<DirectInput><#=tbl.GetDropAndCreateDdl()#></DirectInput>
+				</ExecuteSQL>
+				<# next #>
+			</Tasks>
+		</Package>
+	</Packages>
+</Biml>

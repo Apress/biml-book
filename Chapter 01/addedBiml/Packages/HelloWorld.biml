@@ -1,0 +1,5 @@
+﻿<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+    <Packages>
+        <Package Name="HelloWorld" ProtectionLevel="DontSaveSensitive" />
+    </Packages>
+</Biml>

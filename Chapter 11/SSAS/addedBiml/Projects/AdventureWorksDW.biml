@@ -1,0 +1,9 @@
+﻿<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Projects>
+    <TabularProject Name="AdventureWorksDW" ServerName=".\TABULAR" Database="AdventureWorksDW" >
+      <TabularModels>
+        <TabularModel TabularModelName="AdventureWorksDW" />
+      </TabularModels>
+    </TabularProject>
+  </Projects>
+</Biml>

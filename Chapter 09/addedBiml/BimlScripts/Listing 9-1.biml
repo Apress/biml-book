@@ -1,0 +1,19 @@
+﻿<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Metadata>
+    <MetadataModel Name="MD_Model">
+      <Entities>
+        <Entity Name="Connections">
+          <Properties>
+            <Property Name="ConnString" DataType="String" IsRequired="true" />
+            <Property Name="IsSource" DataType="Boolean" />
+          </Properties>
+        </Entity>
+        <Entity Name="Tables">
+          <Relationships>
+            <Relationship Name="Connection" Cardinality="ManyToOne" EntityName="Connections" />
+          </Relationships>
+        </Entity>
+      </Entities>
+    </MetadataModel>
+  </Metadata>
+</Biml>

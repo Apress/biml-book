@@ -1,0 +1,59 @@
+<#@ import namespace="System.Data" #>
+<# int rowsPerTable = 10; #>
+<# foreach (var table in RootNode.OleDbConnections["Source"].GenerateTableNodes().Where(i => i.Columns.Any(j => j.IsAssignable))) { #>
+<# for (int i = 0; i < rowsPerTable; i ++) { #>
+INSERT INTO <#=table.Name#> (<#=table.GetColumnList(j => j.IsAssignable)#>) VALUES (<#=string.Join(",", table.Columns.Where(j => j.IsAssignable).Select(j => GetSampleValue(j)))#>)
+<# } #>
+<# } #>
+
+<#+
+Random Rand = new Random();
+
+string GetSampleValue(AstTableColumnBaseNode column)
+{
+  switch (column.DataType)
+  {
+    case DbType.AnsiString:
+    case DbType.AnsiStringFixedLength:
+    case DbType.String:
+    case DbType.StringFixedLength:
+      var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      var length = Rand.Next(1, column.Length == -1 ? 10000 : column.Length);
+      return "'" + new string(Enumerable.Repeat(chars, length).Select(s => s[Rand.Next(s.Length)]).ToArray()) + "'";
+    case DbType.Boolean:
+      return Rand.Next(0, 1).ToString();
+    case DbType.Date:
+      return "'" + new DateTime(1970, 1, 1).AddDays(Rand.Next(5000)).ToShortDateString() + "'";
+    case DbType.DateTime:
+      return "'" + new DateTime(1970, 1, 1).AddMilliseconds(Rand.Next(int.MaxValue)).ToLongTimeString() + "'";
+    case DbType.DateTime2:
+      return "'" + new DateTime(1970, 1, 1).AddMilliseconds(Rand.Next(int.MaxValue)).ToShortDateString() + "'";
+    case DbType.DateTimeOffset:
+      return "'01/01/2001'";
+    case DbType.Time:
+      return "00:00:00";
+    case DbType.Decimal:
+      return "0.0";
+    case DbType.Double:
+      return (Rand.NextDouble() * double.MaxValue).ToString();
+    case DbType.Single:
+      return (Rand.NextDouble() * float.MaxValue).ToString();
+    case DbType.Guid:
+      return Guid.NewGuid().ToString("N");
+    case DbType.Int16:
+      return Rand.Next(Int16.MinValue, Int16.MaxValue).ToString();
+    case DbType.Int32:
+      return Rand.Next(Int32.MinValue, Int32.MaxValue).ToString();
+    case DbType.Int64:
+      return ((long)(Rand.NextDouble() * Int64.MaxValue)).ToString();
+    case DbType.Byte:
+      return Rand.Next(byte.MinValue, byte.MaxValue).ToString();
+    case DbType.SByte:
+      return Rand.Next(sbyte.MinValue, sbyte.MaxValue).ToString();
+    case DbType.Xml:
+      return "'<root></root>'";
+    default:
+      return "NULL";
+  }
+}
+#>

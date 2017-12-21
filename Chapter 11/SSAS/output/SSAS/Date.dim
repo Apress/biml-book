@@ -1,0 +1,122 @@
+<Dimension xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ddl2="http://schemas.microsoft.com/analysisservices/2003/engine/2" xmlns:ddl2_2="http://schemas.microsoft.com/analysisservices/2003/engine/2/2" xmlns:ddl100_100="http://schemas.microsoft.com/analysisservices/2008/engine/100/100" xmlns:dwd="http://schemas.microsoft.com/DataWarehouse/Designer/1.0" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+    <ID>Date</ID>
+    <Name>Date</Name>
+    <Attributes>
+        <Attribute>
+            <ID>Date</ID>
+            <Name>Date</Name>
+            <KeyColumns>
+                <KeyColumn>
+                    <Source xsi:type="ColumnBinding">
+                        <TableID>dbo_DimDate</TableID>
+                        <ColumnID>DateKey</ColumnID>
+                    </Source>
+                    <DataType>Integer</DataType>
+                </KeyColumn>
+            </KeyColumns>
+            <AttributeRelationships>
+                <AstNode>
+                    <AttributeID>Month Name</AttributeID>
+                    <Name>Month Name</Name>
+                </AstNode>
+            </AttributeRelationships>
+            <NameColumn>
+                <Source xsi:type="ColumnBinding">
+                    <TableID>dbo_DimDate</TableID>
+                    <ColumnID>FullDateAlternateKey</ColumnID>
+                </Source>
+                <DataType>WChar</DataType>
+            </NameColumn>
+            <Type>Date</Type>
+            <Usage>Key</Usage>
+            <OrderBy>Key</OrderBy>
+        </Attribute>
+        <Attribute>
+            <ID>Month Name</ID>
+            <Name>Month Name</Name>
+            <KeyColumns>
+                <KeyColumn>
+                    <Source xsi:type="ColumnBinding">
+                        <TableID>dbo_DimDate</TableID>
+                        <ColumnID>CalendarYear</ColumnID>
+                    </Source>
+                    <DataType>SmallInt</DataType>
+                </KeyColumn>
+                <KeyColumn>
+                    <Source xsi:type="ColumnBinding">
+                        <TableID>dbo_DimDate</TableID>
+                        <ColumnID>MonthNumberOfYear</ColumnID>
+                    </Source>
+                    <DataType>UnsignedTinyInt</DataType>
+                </KeyColumn>
+            </KeyColumns>
+            <AttributeRelationships>
+                <AstNode>
+                    <AttributeID>Calendar Year</AttributeID>
+                    <Name>Calendar Year</Name>
+                </AstNode>
+            </AttributeRelationships>
+            <NameColumn>
+                <Source xsi:type="ColumnBinding">
+                    <TableID>dbo_DimDate</TableID>
+                    <ColumnID>EnglishMonthName</ColumnID>
+                </Source>
+                <DataType>WChar</DataType>
+                <DataSize>10</DataSize>
+            </NameColumn>
+            <Type>Months</Type>
+            <OrderBy>Key</OrderBy>
+        </Attribute>
+        <Attribute>
+            <ID>Calendar Year</ID>
+            <Name>Calendar Year</Name>
+            <KeyColumns>
+                <KeyColumn>
+                    <Source xsi:type="ColumnBinding">
+                        <TableID>dbo_DimDate</TableID>
+                        <ColumnID>CalendarYear</ColumnID>
+                    </Source>
+                    <DataType>SmallInt</DataType>
+                </KeyColumn>
+            </KeyColumns>
+            <NameColumn>
+                <Source xsi:type="ColumnBinding">
+                    <TableID>dbo_DimDate</TableID>
+                    <ColumnID>CalendarYear</ColumnID>
+                </Source>
+                <DataType>WChar</DataType>
+            </NameColumn>
+            <Type>Years</Type>
+            <OrderBy>Key</OrderBy>
+        </Attribute>
+    </Attributes>
+    <Hierarchies>
+        <Hierarchy>
+            <ID>Calendar</ID>
+            <Name>Calendar</Name>
+            <Levels>
+                <Level>
+                    <ID>Year</ID>
+                    <Name>Year</Name>
+                    <SourceAttributeID>Calendar Year</SourceAttributeID>
+                </Level>
+                <Level>
+                    <ID>Month</ID>
+                    <Name>Month</Name>
+                    <SourceAttributeID>Month Name</SourceAttributeID>
+                </Level>
+                <Level>
+                    <ID>Date</ID>
+                    <Name>Date</Name>
+                    <SourceAttributeID>Date</SourceAttributeID>
+                </Level>
+            </Levels>
+        </Hierarchy>
+    </Hierarchies>
+    <Source xsi:type="DataSourceViewBinding">
+        <DataSourceViewID>AdventureWorksDW</DataSourceViewID>
+    </Source>
+    <ErrorConfiguration />
+    <Type>Time</Type>
+    <CurrentStorageMode>Molap</CurrentStorageMode>
+</Dimension>

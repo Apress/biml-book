@@ -1,0 +1,12 @@
+<#@ template language="VB" optionexplicit="False"#>
+<#@ import namespace="System.Data.SqlClient" #>
+<#
+ddl = string.Join("", RootNode.Tables.Select(Function(t)  t.GetDropAndCreateDdl().Replace("GO" & chr(10), "")))
+
+Using conn as new SqlConnection("Data source=localhost; Database=MyBiml_Destination;Integrated Security=SSPI")
+  conn.Open()
+  Using cmd as new SqlCommand(ddl, conn)
+    cmd.ExecuteNonQuery()
+  End Using
+End Using
+#>

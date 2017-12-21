@@ -1,0 +1,21 @@
+<#@ template language="VB" #>
+<#@ property name="table" type="AstTableNode" #>
+<Container Name="Copy DataPatterns_<#=table.Schema.Name#>_<#=table.Name#>" ConstraintMode="Linear">
+  <Tasks>
+    <ExecuteSQL Name="Truncate" ConnectionName="Target">
+      <DirectInput>TRUNCATE TABLE <#=table.ScopedName#></DirectInput>
+    </ExecuteSQL>
+    <Dataflow Name="Copy <#=table.Schema.Name#>_<#=table.Name#>">
+      <Transformations>
+        <OleDbSource Name="Load" ConnectionName="AdventureWorks2014">
+          <DirectInput>SELECT <#=table.GetColumnList()#> FROM   
+<#=table.GetTag("SourceSchemaQualifiedName")#>
+          </DirectInput>
+        </OleDbSource>
+        <OleDbDestination Name="Set" ConnectionName="Target">
+          <TableOutput TableName="<#=table.ScopedName#>" />
+        </OleDbDestination>
+      </Transformations>
+    </Dataflow>
+  </Tasks>
+</Container>

@@ -1,0 +1,11 @@
+﻿<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+	<Packages>
+		<#
+		string packageName = "HelloWorld";
+		#>
+		<Package Name="<#= packageName #>" ProtectionLevel="DontSaveSensitive" />
+    </Packages>
+	<FileFormats>
+		<
+    </FileFormats>
+</Biml>

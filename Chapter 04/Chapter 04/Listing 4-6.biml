@@ -1,0 +1,27 @@
+<#@ template language="VB" optionexplicit="False" #>
+<#
+  Dim includedSchemas as new List(of String) from { "Production", "Sales" }
+  Dim includedTables as new List(of String) from {"Product", "ProductCategory", "ProductSubcategory", "SalesOrderDetail", "SalesOrderHeader"}
+  
+  Dim sourceConnection = SchemaManager.CreateConnectionNode("AW2014", "Data Source=.;Initial Catalog=AdventureWorks2014;Provider=SQLNCLI11;Integrated Security=SSPI;")
+  
+  Dim sourceMetadata = sourceConnection.GetDatabaseSchema(includedSchemas, includedTables, ImportOptions.ExcludeCheckConstraint or ImportOptions.ExcludeColumnDefault or ImportOptions.ExcludeForeignKey or ImportOptions.ExcludeIdentity or ImportOptions.ExcludeIndex or ImportOptions.ExcludePrimaryKey or ImportOptions.ExcludeUniqueKey or ImportOptions.ExcludeViews)
+#>
+
+    
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Connections>
+    <OleDbConnection Name="Staging" ConnectionString="Data Source=.;Initial Catalog=Staging;Provider=SQLNCLI11;Integrated Security=SSPI;" />
+  </Connections>
+  <Packages>
+    <Package Name="DropAndCreateStagingTables">
+      <Tasks>
+        <# for each tbl in sourceMetadata.TableNodes #>
+        <ExecuteSQL Name="Drop and Create <#=tbl.Schema#> <#= tbl.Name#>" ConnectionName="Staging">
+          <DirectInput><#= tbl.GetDropAndCreateDdl()#></DirectInput>
+        </ExecuteSQL>
+        <# next #>
+      </Tasks>
+    </Package>
+  </Packages>  
+</Biml>

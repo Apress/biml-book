@@ -1,0 +1,12 @@
+<#@ import  namespace="System.Data.SqlClient" #>
+<#
+var ddl = string.Join("", RootNode.Tables.Select(t => t.GetDropAndCreateDdl().Replace("GO\n", "")));
+using (var conn = new SqlConnection("Data Source=localhost;Database=MyBiml_Destination;Integrated Security=SSPI"))
+{
+  conn.Open();
+  using (var cmd = new SqlCommand(ddl, conn))
+  {
+    cmd.ExecuteNonQuery();
+  }
+}
+#>

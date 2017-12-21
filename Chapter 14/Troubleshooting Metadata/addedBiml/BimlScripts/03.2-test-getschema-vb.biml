@@ -1,0 +1,22 @@
+﻿<#@ template language="VB" optionexplicit="False"#>
+<#@ code file="..\Code\DataTableExtensionsVb.vb" #>
+<#@ import namespace="System.Data" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+<#
+Dim dataTable As New DataTable(Nothing)
+Using connection as new SqlConnection("Server=localhost;Initial Catalog=AdventureWorks2014;Integrated Security=SSPI;")
+  connection.Open()
+  Dim restrictions() as String =  { Nothing, Nothing, "Person", Nothing }
+  dataTable = connection.GetSchema("Columns", restrictions)
+  dataTable.DefaultView.Sort = "ORDINAL_POSITION ASC"
+End Using
+#>
+<# If Not IsNothing(dataTable) #>
+    <Tables>
+        <#=dataTable.ToAstTableNode().GetBiml()#>
+    </Tables>
+<# End If #>
+</Biml>
+
+

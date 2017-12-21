@@ -1,0 +1,77 @@
+<#@ template designerbimlpath="Biml/Packages" tier="99" #>
+<#@ property name="sourceConnection" type="String" #>
+<#@ property name="targetConnection" type="String" #>
+<#@ property name="sourceTable" type="String" #>
+<#@ property name="srcTable" type="AstTableNode" #>
+<#@ property name="tgtTable" type="AstTableNode" #>
+    <Package Name="Load_<#=tgtTable.Name#>_InstrumentedNewOnly" ProtectionLevel="EncryptSensitiveWithUserKey">
+        <Tasks>
+    		<Dataflow Name="DFT Load <#=tgtTable.Name#>">
+    		    <Transformations>
+					<OleDbSource Name="OLEDBSrc <#=sourceTable#>" ConnectionName="<#=sourceConnection#>">
+                        <DirectInput><#=srcTable.GetSelectSql()#></DirectInput>
+                    </OleDbSource>
+                    <Lookup Name="LkUp Correlate" OleDbConnectionName="<#=targetConnection#>" NoMatchBehavior="RedirectRowsToNoMatchOutput">
+                        <InputPath OutputPathName="OLEDBSrc <#=sourceTable#>.Output" />
+                        <Parameters>
+                            <#
+                            // get Columns
+                            Dictionary<string, string> cols = new Dictionary<string, string>();
+                            Dictionary<string, string> keyCols = new Dictionary<string, string>();
+                            string bkList = "";
+                            foreach(var srcCol in srcTable.Columns) {
+                                if(srcCol.GetTag("IsBusinessKey").ToString() == "true") {
+                                    bkList += "[" + srcCol.GetTag("MappedColumnName") + "],";
+                                    keyCols.Add(srcCol.Name, srcCol.GetTag("MappedColumnName"));
+                                } // if BK
+                                cols.Add(srcCol.Name, srcCol.GetTag("MappedColumnName"));
+                            #>
+                            <Parameter SourceColumn="<#=srcCol.Name#>" />
+                            <#
+                    } // foreach srcCol
+                    #>
+                        </Parameters>
+                        <Inputs>
+                            <#
+                    foreach(KeyValuePair<string, string> kc in keyCols) {
+                        #>
+                            <Column SourceColumn="<#=kc.Key#>" TargetColumn="<#=kc.Value#>" />
+                            <#
+                    } // foreach keyvaluepair (keyCols)
+                    #>
+                        </Inputs>
+                        <#
+                        string lkupSelect = "Select " + bkList.Substring(0, bkList.Length-1) + " From " + tgtTable.SchemaQualifiedName;
+                        string lkupParameterizedQueryWhere = bkList.Replace("]","] = ?").Replace(",", "\n And ").Replace("[", "[refTable].[");
+                        #>
+                        <DirectInput>
+                            <#=lkupSelect#>
+                        </DirectInput>
+                        <ParameterizedQuery>select * from (<#=lkupSelect#>) [refTable] 
+			                  where <#=lkupParameterizedQueryWhere.Substring(0, lkupParameterizedQueryWhere.Length - 6)#>
+                        </ParameterizedQuery>
+                    </Lookup>
+                    <DerivedColumns Name="DER ETL Instrumentation">
+                        <InputPath OutputPathName="LkUp Correlate.NoMatch" />
+                        <Columns>
+                            <Column Name="ETLLoadID" DataType="Int32">(DT_I4)@[System::ServerExecutionID]</Column>
+                            <Column Name="LoadDate" DataType="Date">@[System::StartTime]</Column>
+                        </Columns>
+                    </DerivedColumns>
+                    <OleDbDestination Name="OLEDBDest <#=tgtTable.Name#>" ConnectionName="<#=targetConnection#>">
+                        <InputPath OutputPathName="DER ETL Instrumentation.Output" />
+                        <Columns>
+                            <#
+                            foreach(KeyValuePair<string, string> c in cols) {
+                            #>
+                            <Column SourceColumn="<#=c.Key#>" TargetColumn="<#=c.Value#>" />
+                            <#
+                            } // foreach keyvaluepair(cols)
+                            #>
+                        </Columns>
+                        <ExternalTableOutput Table="<#=tgtTable.SchemaQualifiedName#>" />
+                    </OleDbDestination>
+                </Transformations>
+    		</Dataflow>
+        </Tasks>
+    </Package>

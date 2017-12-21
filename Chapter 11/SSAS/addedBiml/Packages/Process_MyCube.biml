@@ -1,0 +1,14 @@
+﻿<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+    <Packages>
+        <Package Name="Process_MyCube">
+            <Tasks>
+                <AnalysisServicesProcessing Name="Process Cube MySalesCube" ConnectionName="AW_Cube" ProcessingOrder="Parallel">
+                    <ProcessingConfigurations>
+                        <CubeProcessingConfiguration DatabaseID="MyCubeDB"  ProcessingOption="ProcessFull" CubeId="MyCube"/>
+                    </ProcessingConfigurations>
+                    <ErrorConfiguration KeyDuplicate="IgnoreError" KeyErrorAction="ConvertToUnknown" KeyErrorLimit="0" KeyNotFound="IgnoreError" NullKeyNotAllowed="IgnoreError" NullKeyConvertedToUnknown="IgnoreError"/>
+                </AnalysisServicesProcessing>
+            </Tasks>
+        </Package>
+    </Packages>
+</Biml>

@@ -1,0 +1,186 @@
+<Cube xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ddl2="http://schemas.microsoft.com/analysisservices/2003/engine/2" xmlns:ddl2_2="http://schemas.microsoft.com/analysisservices/2003/engine/2/2" xmlns:ddl100_100="http://schemas.microsoft.com/analysisservices/2008/engine/100/100" xmlns:dwd="http://schemas.microsoft.com/DataWarehouse/Designer/1.0" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+    <ID>MyCube</ID>
+    <Name>MyCube</Name>
+    <Dimensions>
+        <Dimension>
+            <ID>Currency</ID>
+            <Name>Currency</Name>
+            <Attributes>
+                <Attribute>
+                    <AttributeID>Currency</AttributeID>
+                </Attribute>
+            </Attributes>
+            <DimensionID>Currency</DimensionID>
+        </Dimension>
+        <Dimension>
+            <ID>Order Date</ID>
+            <Name>Order Date</Name>
+            <Attributes>
+                <Attribute>
+                    <AttributeID>Date</AttributeID>
+                </Attribute>
+                <Attribute>
+                    <AttributeID>Month Name</AttributeID>
+                </Attribute>
+                <Attribute>
+                    <AttributeID>Calendar Year</AttributeID>
+                </Attribute>
+            </Attributes>
+            <Hierarchies>
+                <Hierarchy>
+                    <HierarchyID>Calendar</HierarchyID>
+                </Hierarchy>
+            </Hierarchies>
+            <DimensionID>Date</DimensionID>
+        </Dimension>
+        <Dimension>
+            <ID>Ship Date</ID>
+            <Name>Ship Date</Name>
+            <Attributes>
+                <Attribute>
+                    <AttributeID>Date</AttributeID>
+                </Attribute>
+                <Attribute>
+                    <AttributeID>Month Name</AttributeID>
+                </Attribute>
+                <Attribute>
+                    <AttributeID>Calendar Year</AttributeID>
+                </Attribute>
+            </Attributes>
+            <Hierarchies>
+                <Hierarchy>
+                    <HierarchyID>Calendar</HierarchyID>
+                </Hierarchy>
+            </Hierarchies>
+            <DimensionID>Date</DimensionID>
+        </Dimension>
+        <Dimension>
+            <ID>Sales Territory</ID>
+            <Name>Sales Territory</Name>
+            <Attributes>
+                <Attribute>
+                    <AttributeID>Sales Territory Region</AttributeID>
+                </Attribute>
+                <Attribute>
+                    <AttributeID>Sales Territory Group</AttributeID>
+                </Attribute>
+                <Attribute>
+                    <AttributeID>Sales Territory Country</AttributeID>
+                </Attribute>
+            </Attributes>
+            <Hierarchies>
+                <Hierarchy>
+                    <HierarchyID>Sales Territory</HierarchyID>
+                </Hierarchy>
+            </Hierarchies>
+            <DimensionID>Sales Territory</DimensionID>
+        </Dimension>
+    </Dimensions>
+    <MeasureGroups>
+        <MeasureGroup>
+            <ID>Internet Sales</ID>
+            <Name>Internet Sales</Name>
+            <Measures>
+                <Measure>
+                    <ID>Order Quantity</ID>
+                    <Name>Order Quantity</Name>
+                    <Source>
+                        <Source xsi:type="ColumnBinding">
+                            <TableID>dbo_FactInternetSales</TableID>
+                            <ColumnID>OrderQuantity</ColumnID>
+                        </Source>
+                        <DataType>SmallInt</DataType>
+                    </Source>
+                    <FormatString>Standard</FormatString>
+                </Measure>
+                <Measure>
+                    <ID>Sales Amount</ID>
+                    <Name>Sales Amount</Name>
+                    <Source>
+                        <Source xsi:type="ColumnBinding">
+                            <TableID>dbo_FactInternetSales</TableID>
+                            <ColumnID>SalesAmount</ColumnID>
+                        </Source>
+                        <DataType>Currency</DataType>
+                    </Source>
+                    <FormatString>Standard</FormatString>
+                </Measure>
+            </Measures>
+            <Dimensions>
+                <Dimension xsi:type="RegularMeasureGroupDimension">
+                    <CubeDimensionID>Order Date</CubeDimensionID>
+                    <Attributes>
+                        <Attribute>
+                            <KeyColumns>
+                                <KeyColumn>
+                                    <Source xsi:type="ColumnBinding">
+                                        <TableID>dbo_FactInternetSales</TableID>
+                                        <ColumnID>OrderDateKey</ColumnID>
+                                    </Source>
+                                    <DataType>Integer</DataType>
+                                </KeyColumn>
+                            </KeyColumns>
+                            <AttributeID>Date</AttributeID>
+                        </Attribute>
+                    </Attributes>
+                </Dimension>
+                <Dimension xsi:type="RegularMeasureGroupDimension">
+                    <CubeDimensionID>Ship Date</CubeDimensionID>
+                    <Attributes>
+                        <Attribute>
+                            <KeyColumns>
+                                <KeyColumn>
+                                    <Source xsi:type="ColumnBinding">
+                                        <TableID>dbo_FactInternetSales</TableID>
+                                        <ColumnID>ShipDateKey</ColumnID>
+                                    </Source>
+                                    <DataType>Integer</DataType>
+                                </KeyColumn>
+                            </KeyColumns>
+                            <AttributeID>Date</AttributeID>
+                        </Attribute>
+                    </Attributes>
+                </Dimension>
+                <Dimension xsi:type="RegularMeasureGroupDimension">
+                    <CubeDimensionID>Currency</CubeDimensionID>
+                    <Attributes>
+                        <Attribute>
+                            <KeyColumns>
+                                <KeyColumn>
+                                    <Source xsi:type="ColumnBinding">
+                                        <TableID>dbo_FactInternetSales</TableID>
+                                        <ColumnID>CurrencyKey</ColumnID>
+                                    </Source>
+                                    <DataType>Integer</DataType>
+                                </KeyColumn>
+                            </KeyColumns>
+                            <AttributeID>Currency</AttributeID>
+                        </Attribute>
+                    </Attributes>
+                </Dimension>
+                <Dimension xsi:type="RegularMeasureGroupDimension">
+                    <CubeDimensionID>Sales Territory</CubeDimensionID>
+                    <Attributes>
+                        <Attribute>
+                            <KeyColumns>
+                                <KeyColumn>
+                                    <Source xsi:type="ColumnBinding">
+                                        <TableID>dbo_FactInternetSales</TableID>
+                                        <ColumnID>SalesTerritoryKey</ColumnID>
+                                    </Source>
+                                    <DataType>Integer</DataType>
+                                </KeyColumn>
+                            </KeyColumns>
+                            <AttributeID>Sales Territory Region</AttributeID>
+                        </Attribute>
+                    </Attributes>
+                </Dimension>
+            </Dimensions>
+            <ErrorConfiguration />
+        </MeasureGroup>
+    </MeasureGroups>
+    <Source xsi:type="DataSourceViewBinding">
+        <DataSourceViewID>AdventureWorksDW</DataSourceViewID>
+    </Source>
+    <AstNode />
+</Cube>

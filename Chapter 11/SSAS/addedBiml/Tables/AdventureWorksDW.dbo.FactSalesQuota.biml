@@ -1,0 +1,51 @@
+﻿<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Tables>
+    <Table Name="FactSalesQuota" SchemaName="AdventureWorksDW.dbo">
+      <Columns>
+        <Column Name="SalesQuotaKey" DataType="Int32" IsNullable="false" />
+        <Column Name="EmployeeKey" DataType="Int32" IsNullable="false" />
+        <Column Name="DateKey" DataType="Int32" IsNullable="false" />
+        <Column Name="CalendarYear" DataType="Int16" IsNullable="false" />
+        <Column Name="CalendarQuarter" DataType="Byte" IsNullable="false" />
+        <Column Name="SalesAmountQuota" DataType="Currency" IsNullable="false" />
+        <Column Name="Date" DataType="DateTime" IsNullable="true" />
+      </Columns>
+      <Keys>
+        <PrimaryKey Name="PK_FactSalesQuota">
+          <Columns>
+            <Column ColumnName="SalesQuotaKey" SortOrder="Asc" />
+          </Columns>
+        </PrimaryKey>
+      </Keys>
+      <AnalysisMetadata>
+        <Tabular Name="SalesAmountQuota" >
+          <Partitions>
+            <Partition Name="2010">
+              <SourceQuery>SELECT [SalesQuotaKey], [EmployeeKey], [DateKey], [SalesAmountQuota] FROM [dbo].[FactSalesQuota] WHERE [CalendarYear] = 2010</SourceQuery>
+            </Partition>
+            <Partition Name="2011">
+              <SourceQuery>SELECT [SalesQuotaKey], [EmployeeKey], [DateKey], [SalesAmountQuota] FROM [dbo].[FactSalesQuota] WHERE [CalendarYear] = 2011</SourceQuery>
+            </Partition>
+            <Partition Name="2012">
+              <SourceQuery>SELECT [SalesQuotaKey], [EmployeeKey], [DateKey], [SalesAmountQuota] FROM [dbo].[FactSalesQuota] WHERE [CalendarYear] = 2012</SourceQuery>
+            </Partition>
+            <Partition Name="2013">
+              <SourceQuery>SELECT [SalesQuotaKey], [EmployeeKey], [DateKey], [SalesAmountQuota] FROM [dbo].[FactSalesQuota] WHERE [CalendarYear] = 2013</SourceQuery>
+            </Partition>
+          </Partitions>
+          <Columns>
+            <Column Name="SalesQuotaKey" SourceColumnName="SalesQuotaKey"  />
+            <Column Name="EmployeeKey" SourceColumnName="EmployeeKey" />
+            <Column Name="DateKey" SourceColumnName="DateKey" />
+            <Column Name="SalesAmountQuota" SourceColumnName="SalesAmountQuota" />
+          </Columns>
+          <Measures>
+            <Measure Name="SalesQuota" DataType="Decimal" FormatString="$#,0.00;($#,0.00);$#,0.00">
+              <Expression>SUM(SalesAmountQuota[SalesAmountQuota])</Expression>
+            </Measure>
+          </Measures>
+        </Tabular>
+      </AnalysisMetadata>
+    </Table>
+  </Tables>
+</Biml>

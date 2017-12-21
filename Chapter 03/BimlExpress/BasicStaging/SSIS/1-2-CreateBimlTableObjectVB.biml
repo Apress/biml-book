@@ -1,0 +1,21 @@
+<#@ template tier="20" language="VB" optionexplicit="False" #>
+<#@ import namespace="Varigence.Biml.CoreLowerer.SchemaManagement" #>
+<#
+Dim sourceConnection = RootNode.OleDbConnections("Source")
+Dim includedSchemas as new List(of String) from {"HumanResources","Person"," Production","Purchasing","Sales"}
+Dim importResult = sourceConnection.GetDatabaseSchema(includedSchemas, nothing, ImportOptions.ExcludeForeignKey or ImportOptions.ExcludeColumnDefault or ImportOptions.ExcludeViews)
+#>
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+	<Tables>
+	<# for each tbl in importResult.TableNodes #>
+		<Table Name="<#=tbl.Name#>" SchemaName="Staging.<#=tbl.Schema#>">
+			<Columns>
+			<# for each column in tbl.Columns #>
+				<#=column.GetBiml()#>
+			<# next #>
+				<Column Name="LoadDateTime" DataType="DateTime2"/>
+			</Columns>
+		</Table>
+	<# next #>
+	</Tables>
+</Biml>

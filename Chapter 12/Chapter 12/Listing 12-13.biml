@@ -1,0 +1,11 @@
+<#@ template language="VB" optionexplicit="False" #>
+<# for each tableNode in RootNode.OleDbConnections("Source_2").GenerateTableNodes()  
+  Dim dateColumnQueries as new List(of String) 
+  for each Column in tableNode.Columns.Where(function(c) c.DataType = System.Data.DbType.DateTime or c.DataType = System.Data.DbType.DateTime2)
+    dateColumnQueries.Add("SELECT MAX(" + column.QualifiedName + ") AS DateColumn FROM " + tableNode.SchemaQualifiedName)
+  next
+  query  = "SELECT MAX(DateColumn) As MaxDate FROM (" + string.Join(" UNION ALL ", dateColumnQueries) + ") AS a" 
+if (dateColumnQueries.Any()) then #>
+<#=tableNode.Name#>,<#=ExternalDataAccess.GetDataTable(RootNode.OleDbConnections("Source_2").ConnectionString, query).Rows(0)(0)#>
+<# end if
+next #>

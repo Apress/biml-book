@@ -1,0 +1,16 @@
+<#@ template tier="3" language="VB" #>
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Packages>
+    <Package Name="01_CreateStaging">
+      <Tasks>
+        <# for each table as AstTableNode in RootNode.Tables #>
+        <ExecuteSQL Name="CRE <#=table.Name#>" ConnectionName="Target">
+          <DirectInput>
+            <#=table.GetDropAndCreateDdl()#>
+          </DirectInput>
+        </ExecuteSQL>
+        <# next #>
+      </Tasks>
+    </Package>
+  </Packages>
+</Biml>

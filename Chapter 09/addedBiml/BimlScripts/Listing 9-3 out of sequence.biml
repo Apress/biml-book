@@ -1,0 +1,20 @@
+﻿<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Connections>
+<#
+var metadata = RootNode.MetadataInstances["MD_Instance"];
+var connectionEntity = metadata.Entities.FirstOrDefault(i => i.MetadataModelEntity.Name == "Connections");
+if (connectionEntity != null) {
+  foreach (var dataItem in connectionEntity.DataItems) {
+    var connectionStringProp = dataItem.Properties.FirstOrDefault(i => i.Property.Name == "ConnString");
+    if (connectionStringProp != null)
+    {
+      var connString = connectionStringProp.Value;
+      // TODO: If target property is not a string, you might parse it here
+#>
+    <Connection Name="<#=dataItem.Name#>" ConnectionString="<#=connString#>" />
+<#  }
+  }
+}
+#>
+  </Connections>
+</Biml>

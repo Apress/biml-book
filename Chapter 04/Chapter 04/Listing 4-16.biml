@@ -1,0 +1,20 @@
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Connections>
+    <OleDbConnection Name="Target" ConnectionString="Data Source=localhost;initial catalog=MyBiml_Flatfiles;provider=SQLNCLI11;integrated security=SSPI"></OleDbConnection>
+  </Connections>
+  <Databases>
+    <Database Name="MyBiml_Flatfiles" ConnectionName="Target"></Database>
+  </Databases>
+  <Schemas>
+    <Schema Name="dbo" DatabaseName="MyBiml_Flatfiles"></Schema>
+  </Schemas>
+  <Tables>
+    <Table Name="TBL_MyFlatFile" SchemaName="MyBiml_Flatfiles.dbo">
+      <Columns>
+        <Column Name="Warehouse" DataType="String" Length="50" />
+        <Column Name="Item" DataType="String" Length="50" />
+        <Column Name="Inventory" DataType="Int64" />
+      </Columns>
+    </Table>
+  </Tables>
+</Biml>

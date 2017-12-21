@@ -1,0 +1,54 @@
+<Project xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ddl2="http://schemas.microsoft.com/analysisservices/2003/engine/2" xmlns:ddl2_2="http://schemas.microsoft.com/analysisservices/2003/engine/2/2" xmlns:ddl100_100="http://schemas.microsoft.com/analysisservices/2008/engine/100/100" xmlns:dwd="http://schemas.microsoft.com/DataWarehouse/Designer/1.0">
+  <ProductVersion>10.0.1600.22</ProductVersion>
+  <SchemaVersion>9.0.2.10</SchemaVersion>
+  <Database>
+    <Name>Analysis.database</Name>
+    <FullPath>Analysis.database</FullPath>
+  </Database>
+  <State>
+  </State>
+  <Cubes>
+    <ProjectItem>
+      <Name>MyCube.cube</Name>
+      <FullPath>MyCube.cube</FullPath>
+      <Dependencies>
+        <ProjectItem>
+          <Name>MyCube.partitions</Name>
+          <FullPath>MyCube.partitions</FullPath>
+        </ProjectItem>
+      </Dependencies>
+    </ProjectItem>
+  </Cubes>
+  <Dimensions>
+    <ProjectItem>
+      <Name>Sales Territory.dim</Name>
+      <FullPath>Sales Territory.dim</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Date.dim</Name>
+      <FullPath>Date.dim</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Currency.dim</Name>
+      <FullPath>Currency.dim</FullPath>
+    </ProjectItem>
+  </Dimensions>
+  <DataSources>
+    <ProjectItem>
+      <Name>AW_DWH.ds</Name>
+      <FullPath>AW_DWH.ds</FullPath>
+    </ProjectItem>
+  </DataSources>
+  <DataSourceViews>
+    <ProjectItem>
+      <Name>AW_DWH.dsv</Name>
+      <FullPath>AW_DWH.dsv</FullPath>
+    </ProjectItem>
+  </DataSourceViews>
+  <MiningModels>
+  </MiningModels>
+  <Roles>
+  </Roles>
+  <Configurations>
+  </Configurations>
+</Project>

@@ -1,0 +1,166 @@
+<#@ import namespace="System.Data" #> 
+<#@ import namespace="System.Data.SqlClient" #>
+<# string connectionString = @"Data Source=vmDemo\MBF;Initial Catalog=BRMetadata;Integrated Security=True;"; #>
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+    <#
+    // Connections
+    using(SqlConnection cnCn = new SqlConnection(connectionString)) {
+        using(SqlCommand cmdCn = new SqlCommand()) {
+            string sqlCn = "Select ConnectionName, ConnectionString From [di].[Connections]";
+            cmdCn.Connection = cnCn;
+            cmdCn.CommandType = System.Data.CommandType.Text;
+            cmdCn.CommandText = sqlCn;
+            cnCn.Open();
+            SqlDataReader rdrCn = cmdCn.ExecuteReader();
+            #><Connections><#
+            while(rdrCn.Read()) {
+                #><Connection Name="<#=rdrCn["ConnectionName"].ToString()#>" ConnectionString="<#=rdrCn["ConnectionString"].ToString()#>" /><#
+            } // while rdr.Read
+            #></Connections><#
+        } // using cmd
+    } // using cn
+    
+    // Databases
+    using(SqlConnection cnDb = new SqlConnection(connectionString)) {
+        using(SqlCommand cmdDb = new SqlCommand()) {
+            string sqlDb = "Select d.DatabaseName, c.ConnectionName From [di].[Databases] As d ";
+            sqlDb += "Join [di].[Connections] As c ";
+            sqlDb += "  On c.ConnectionID = d.ConnectionID ";
+            cmdDb.Connection = cnDb;
+            cmdDb.CommandType = System.Data.CommandType.Text;
+            cmdDb.CommandText = sqlDb;
+            cnDb.Open();
+            SqlDataReader rdrDb = cmdDb.ExecuteReader();
+            #><Databases><#
+            while(rdrDb.Read()) {
+                #><Database Name="<#=rdrDb["DatabaseName"].ToString()#>" ConnectionName="<#=rdrDb["ConnectionName"].ToString()#>" /><#
+            } // while rdr.Read
+            #></Databases><#
+        } // using cmd
+    } // using cn
+
+    // Schemas
+    using(SqlConnection cnSch = new SqlConnection(connectionString)) {
+        using(SqlCommand cmdSch = new SqlCommand()) {
+            string sqlSch = "Select s.SchemaName, d.DatabaseName From [di].[Schemas] As s ";
+            sqlSch += "Join [di].[Databases] As d ";
+            sqlSch += "  On d.DatabaseID = s.DatabaseID ";
+            cmdSch.Connection = cnSch;
+            cmdSch.CommandType = System.Data.CommandType.Text;
+            cmdSch.CommandText = sqlSch;
+            cnSch.Open();
+            SqlDataReader rdrSch = cmdSch.ExecuteReader();
+            #><Schemas><#
+            while(rdrSch.Read()) {
+                #><Schema Name="<#=rdrSch["SchemaName"].ToString()#>" DatabaseName="<#=rdrSch["DatabaseName"].ToString()#>" /><#
+            } // while rdr.Read
+            #></Schemas><#
+        } // using cmd
+    } // using cn
+
+    // Tables
+    int sourceTableId = 0;
+    int targetTableId = 0;
+    string sourceTableName = "";
+    string targetTableName = "";
+    string patternName = "";
+    using(SqlConnection cnTbl = new SqlConnection(connectionString)) {
+        string sqlTbl = "Select distinct mm.SourceDatabaseName + '.' + mm.SourceSchemaName As SourceQualifiedSchemaName ";
+        sqlTbl += ", mm.SourceSchemaName, mm.SourceTableName, mm.SourceTableID, mm.SourceTableName ";
+        sqlTbl += ", mm.TargetDatabaseName + '.' + mm.TargetSchemaName As TargetQualifiedSchemaName ";
+        sqlTbl += ", mm.TargetSchemaName, mm.TargetTableName, mm.TargetTableID ";
+        sqlTbl += ", mm.TargetSchemaName, mm.TargetTableName, mm.TargetTableID ";
+        sqlTbl += ", p.PatternName ";
+        sqlTbl += "From [di].[metadataMappings] As mm ";
+        sqlTbl += "Join [di].[TablePatterns] tp On tp.TableID = mm.TargetTableID ";
+        sqlTbl += "Join [di].[Patterns] p On p.PatternID = tp.PatternID; ";
+        sqlTbl += "Select mm.SourceTableID, mm.SourceColumnName ";
+        sqlTbl += ", sc.DataType As SourceDataType, sc.[Length] As SourceLength ";
+        sqlTbl += ", sc.IsNullable As SourceIsNullable, mm.TargetTableID, mm.TargetTableName ";
+        sqlTbl += ", mm.TargetColumnName, tc.DataType As TargetDataType ";
+        sqlTbl += ", tc.[Length] As TargetLength, tc.IsNullable As TargetIsNullable ";
+        sqlTbl += ", mm.IsBusinessKey ";
+        sqlTbl += "From [di].[metadataMappings] As mm ";
+        sqlTbl += "Join [di].[Columns] sc ";
+        sqlTbl += "  On sc.ColumnID = mm.SourceColumnID ";
+        sqlTbl += "Join [di].[Columns] tc ";
+        sqlTbl += "  On tc.ColumnID = mm.TargetColumnID ";
+        cnTbl.Open();
+        SqlDataAdapter adTbl = new SqlDataAdapter();
+        adTbl.SelectCommand = new SqlCommand(sqlTbl, cnTbl);
+        DataSet dsTbl = new DataSet();
+        adTbl.Fill(dsTbl);
+        #><Tables><#
+        foreach(DataRow str in dsTbl.Tables[0].Rows) {
+            sourceTableId = Convert.ToInt32(str["SourceTableID"]);
+            sourceTableName = str["SourceTableName"].ToString();
+            targetTableId = Convert.ToInt32(str["TargetTableID"]);
+            targetTableName = str["TargetTableName"].ToString();
+            patternName = str["PatternName"].ToString();
+            // build source table
+            #><Table Name="<#=str["SourceTableName"].ToString()#>" SchemaName="<#=str["SourceQualifiedSchemaName"].ToString()#>">
+<Columns><#
+                    foreach(DataRow scr in dsTbl.Tables[1].Rows) {
+                        if(Convert.ToInt32(scr["SourceTableID"]) == sourceTableId) {
+                            if(Convert.ToBoolean(scr["IsBusinessKey"])) {
+                                #><Column Name="<#=scr["SourceColumnName"].ToString()#>" DataType="<#=scr["SourceDataType"].ToString()#>" <#if(Convert.ToInt32(scr["SourceLength"]) != 0) { #>Length="<#=scr["SourceLength"].ToString()#>"<# } #> <#if(Convert.ToBoolean(scr["SourceIsNullable"]) == true) { #>IsNullable="true" <# } #>>
+                                    <Annotations>
+                                        <Annotation AnnotationType="Tag" Tag="IsBusinessKey">true</Annotation>
+                                        <Annotation AnnotationType="Tag" Tag="MappedColumnName"><#=scr["TargetColumnName"].ToString()#></Annotation>
+										                                    </Annotations>
+                                  </Column><#
+                            } // if isBK
+                            else {
+                                #><Column Name="<#=scr["SourceColumnName"].ToString()#>" DataType="<#=scr["SourceDataType"].ToString()#>" <#if(Convert.ToInt32(scr["SourceLength"]) != 0) { #>Length="<#=scr["SourceLength"].ToString()#>"<# } #> <#if(Convert.ToBoolean(scr["SourceIsNullable"]) == true) { #>IsNullable="true" <# } #>>
+                                    <Annotations>
+                                        <Annotation AnnotationType="Tag" Tag="MappedColumnName"><#=scr["TargetColumnName"].ToString()#></Annotation>
+                                    </Annotations>
+                                  </Column><#
+                            } // if not BK
+                        } // if sourceTableID
+                    } // foreach scr
+                #>
+                </Columns>
+                <Annotations>
+                    <Annotation AnnotationType="Tag" Tag="MappedTableID"><#=targetTableId#></Annotation>
+                    <Annotation AnnotationType="Tag" Tag="MappedTableName"><#=targetTableName#></Annotation>
+                </Annotations>
+              </Table>
+            <#
+            // build target table
+            targetTableId = Convert.ToInt32(str["TargetTableID"]);
+            #><Table Name="<#=str["TargetTableName"].ToString()#>" SchemaName="<#=str["TargetQualifiedSchemaName"].ToString()#>">
+<Columns><#
+                foreach(DataRow tcr in dsTbl.Tables[1].Rows) {
+                    if(Convert.ToInt32(tcr["TargetTableID"]) == targetTableId) {
+                        if(Convert.ToBoolean(tcr["IsBusinessKey"])) {
+                        #><Column Name="<#=tcr["TargetColumnName"].ToString()#>" DataType="<#=tcr["TargetDataType"].ToString()#>" <#if(Convert.ToInt32(tcr["TargetLength"]) != 0) { #>Length="<#=tcr["TargetLength"].ToString()#>"<# } #> <#if(Convert.ToBoolean(tcr["TargetIsNullable"]) == true) { #>IsNullable="true" <# } #>>
+                            <Annotations>
+                                <Annotation AnnotationType="Tag" Tag="IsBusinessKey">true</Annotation>
+                                <Annotation AnnotationType="Tag" Tag="MappedColumnName"><#=tcr["SourceColumnName"].ToString()#></Annotation>
+                            </Annotations>
+                            </Column><#
+                        } // if BK
+                        else {
+                        #><Column Name="<#=tcr["TargetColumnName"].ToString()#>" DataType="<#=tcr["TargetDataType"].ToString()#>" <#if(Convert.ToInt32(tcr["TargetLength"]) != 0) { #>Length="<#=tcr["TargetLength"].ToString()#>"<# } #> <#if(Convert.ToBoolean(tcr["TargetIsNullable"]) == true) { #>IsNullable="true" <# } #>>
+                            <Annotations>
+                                <Annotation AnnotationType="Tag" Tag="MappedColumnName"><#=tcr["SourceColumnName"].ToString()#></Annotation>
+                            </Annotations>
+                            </Column><#
+                        } // if not BK
+                    } // if targetTable
+                } // foreach tcr
+            #>
+                </Columns>
+                <Annotations>
+                    <Annotation AnnotationType="Tag" Tag="MappedTableID"><#=sourceTableId#></Annotation>
+                    <Annotation AnnotationType="Tag" Tag="MappedTableName"><#=sourceTableName#></Annotation>
+					<Annotation AnnotationType="Tag" Tag="PatternName"><#=patternName#></Annotation>
+                </Annotations>
+              </Table>
+            <#
+        } // foreach str
+        #></Tables><#
+    } // using cn
+    #>
+</Biml>

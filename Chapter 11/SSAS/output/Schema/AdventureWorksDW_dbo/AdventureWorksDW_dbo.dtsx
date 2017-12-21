@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DTS:Executable
+  DTS:CreationDate="08/20/2017 08:35:50"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="VAUL0001"
+  DTS:CreatorName="peter"
+  DTS:DTSID="{2441D61E-1E38-4907-ADB9-B39642C054B6}"
+  DTS:EnableConfig="True"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion=""
+  DTS:LocaleID="3081"
+  DTS:ObjectName="AdventureWorksDW_dbo"
+  DTS:ProtectionLevel="0"
+  DTS:refId="Package"
+  DTS:VersionBuild="0"
+  DTS:VersionGUID="{5DF2551E-4E08-4365-AC45-6F2C42D0E180}"
+  DTS:VersionMajor="0" xmlns:DTS="www.microsoft.com/SqlServer/Dts">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{64A041E1-15FE-45ED-A67D-2A3B5723381D}"
+      DTS:ObjectName="AdventureWorksDW"
+      DTS:refId="Package.ConnectionManagers[AdventureWorksDW]">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="provider=SQLNCLI11;data source=localhost;initial catalog=AdventureWorksDW2014;integrated security=SSPI"></DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{DF66A8A9-535B-4725-80B8-7BD2B0BC73D4}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="dbo"
+      DTS:refId="Package\dbo"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="AdventureWorksDW"
+          SQLTask:SqlStatementSource="&#xA;                            DECLARE @x nvarchar(4000);&#xA;                            SET @x = 'CREATE SCHEMA [dbo];';&#xA;                            IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = N'dbo')&#xA;                            EXEC(@x);&#xA;                    " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask"></SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:Configurations>
+    <DTS:Configuration
+      DTS:ConfigurationString="C:\PackageConfigurations\AdventureWorksDW.dtsConfig"
+      DTS:ConfigurationType="1"
+      DTS:CreationName=""
+      DTS:DTSID="{CD936B27-3254-45FE-AF4B-460D80314FDC}"
+      DTS:ObjectName="AdventureWorksDW"></DTS:Configuration>
+  </DTS:Configurations>
+</DTS:Executable>

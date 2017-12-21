@@ -1,0 +1,23 @@
+<# var sourceTables = RootNode.DbConnections["Source"].ImportDB(); #>
+<# var targetTables = RootNode.DbConnections["Target"].ImportDB(); #>
+<# foreach (var table in sourceTables.TableNodes) { #>
+<# var matchingDeployedTable = targetTables.TableNodes.FirstOrDefault(i => i.SchemaQualifiedName == table.SchemaQualifiedName); #>
+<# if (matchingDeployedTable != null) { #>
+  <# foreach (var column in table.Columns.Where(i => !matchingDeployedTable.Columns.Any(j => j.Name == i.Name))) { #>
+  ALTER TABLE <#=table.SchemaQualifiedName#> ADD <#=column.Name#> <#=Varigence.Biml.CoreLowerer.TSqlEmitter.TSqlTypeTranslator.Translate(column)#> NULL
+  <# } #>
+  GO
+  <# foreach (var column in matchingDeployedTable.Columns.Where(i => !table.Columns.Any(j => j.Name == i.Name))) {#>
+    ALTER TABLE <#=table.SchemaQualifiedName#> DROP COLUMN <#=column.Name#>
+  <# } #>
+  GO
+<# } else {#>
+  <#=table.GetDropAndCreateDdl()#>
+<# } #>
+<# } #>
+<# foreach (var table in targetTables.TableNodes) { #>
+<# var matchingSourceTable = sourceTables.TableNodes.FirstOrDefault(i => i.SchemaQualifiedName == table.SchemaQualifiedName); #>
+<# if (matchingSourceTable == null) { #>
+  <#=table.GetDropAndCreateDdl()#>
+<# } #>
+<# } #>

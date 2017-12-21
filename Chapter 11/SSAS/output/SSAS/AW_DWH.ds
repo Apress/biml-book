@@ -1,0 +1,11 @@
+<DataSource xsi:type="RelationalDataSource" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ddl2="http://schemas.microsoft.com/analysisservices/2003/engine/2" xmlns:ddl2_2="http://schemas.microsoft.com/analysisservices/2003/engine/2/2" xmlns:ddl100_100="http://schemas.microsoft.com/analysisservices/2008/engine/100/100" xmlns:dwd="http://schemas.microsoft.com/DataWarehouse/Designer/1.0" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+    <ID>AW_DWH</ID>
+    <Name>AW_DWH</Name>
+    <ImpersonationInfo>
+        <ImpersonationInfoSecurity>PasswordRemoved</ImpersonationInfoSecurity>
+        <Account>Domain\User</Account>
+    </ImpersonationInfo>
+    <CreatedTimestamp>2017-08-19T16:07:21</CreatedTimestamp>
+    <LastSchemaUpdate>2017-08-19T16:07:21</LastSchemaUpdate>
+    <ConnectionString>provider=SQLNCLI11;data source=.;integrated security=SSPI;Initial Catalog=AdventureWorksDW2014</ConnectionString>
+</DataSource>

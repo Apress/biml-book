@@ -1,0 +1,7 @@
+<Database xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+    <ID>Analysis</ID>
+    <Name>Analysis</Name>
+    <DataSourceImpersonation />
+    <CreatedTimestamp>2017-08-19T15:31:29</CreatedTimestamp>
+    <LastSchemaUpdate>2017-08-19T15:31:29</LastSchemaUpdate>
+</Database>

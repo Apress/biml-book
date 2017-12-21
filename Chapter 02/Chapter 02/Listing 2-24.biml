@@ -1,0 +1,29 @@
+<#@ template tier="1" #>
+
+<#@ import namespace="Varigence.Biml.CoreLowerer.SchemaManagement" #>
+
+<# var conn=RootNode.OleDbConnections["Source"]; #>
+<# var tables=conn.GenerateTableNodes(); #>
+
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Packages>
+    <#* Moved foreach From Here *#>
+    <Package Name="Source All">
+      <Tasks>
+        <# foreach (var table in tables) { #>
+        <Dataflow Name="Stage <#= table.Name #>" >
+          <Transformations>
+            <OleDbSource Name="Source <#= table.Name #>" ConnectionName="Source">
+              <ExternalTableInput Table="[<#= table.Schema.Name #>].[<#= table.Name #>]" />
+            </OleDbSource>
+            <OleDbDestination Name="Destination" ConnectionName="Stage">
+              <InputPath OutputPathName="Source <#= table.Name #>.Output" />
+              <ExternalTableOutput Table="[<#= table.Schema.Name #>].[<#= table.Name #>]" />
+            </OleDbDestination>
+          </Transformations>
+        </Dataflow>
+        <# } #>
+      </Tasks>
+    </Package>
+  </Packages>
+</Biml>

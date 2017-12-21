@@ -1,0 +1,14 @@
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <FileFormats>
+    <FlatFileFormat Name="MyFlatFile" CodePage="1252" ColumnNamesInFirstDataRow="true" IsUnicode="false">
+      <Columns>
+        <Column Name="Warehouse" DataType="String" Length="50" Delimiter="Semicolon" />
+        <Column Name="Item" DataType="String" Length="50" Delimiter="Semicolon" />
+        <Column Name="Inventory" DataType="Int64" Delimiter="CRLF" />
+      </Columns>
+    </FlatFileFormat> 
+  </FileFormats>
+  <Connections>
+    <FlatFileConnection Name="MyFlatFile" FilePath="C:\myFlatfile.csv" FileFormat="MyFlatFile" />
+  </Connections>
+</Biml>

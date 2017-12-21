@@ -1,0 +1,113 @@
+<Dimension xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ddl2="http://schemas.microsoft.com/analysisservices/2003/engine/2" xmlns:ddl2_2="http://schemas.microsoft.com/analysisservices/2003/engine/2/2" xmlns:ddl100_100="http://schemas.microsoft.com/analysisservices/2008/engine/100/100" xmlns:dwd="http://schemas.microsoft.com/DataWarehouse/Designer/1.0" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+    <ID>Sales Territory</ID>
+    <Name>Sales Territory</Name>
+    <Attributes>
+        <Attribute>
+            <ID>Sales Territory Region</ID>
+            <Name>Sales Territory Region</Name>
+            <KeyColumns>
+                <KeyColumn>
+                    <Source xsi:type="ColumnBinding">
+                        <TableID>dbo_DimSalesTerritory</TableID>
+                        <ColumnID>SalesTerritoryKey</ColumnID>
+                    </Source>
+                    <DataType>Integer</DataType>
+                </KeyColumn>
+            </KeyColumns>
+            <AttributeRelationships>
+                <AstNode>
+                    <AttributeID>Sales Territory Country</AttributeID>
+                    <Name>Sales Territory Country</Name>
+                </AstNode>
+            </AttributeRelationships>
+            <NameColumn>
+                <Source xsi:type="ColumnBinding">
+                    <TableID>dbo_DimSalesTerritory</TableID>
+                    <ColumnID>SalesTerritoryRegion</ColumnID>
+                </Source>
+                <DataType>WChar</DataType>
+                <DataSize>50</DataSize>
+            </NameColumn>
+            <Usage>Key</Usage>
+        </Attribute>
+        <Attribute>
+            <ID>Sales Territory Group</ID>
+            <Name>Sales Territory Group</Name>
+            <KeyColumns>
+                <KeyColumn>
+                    <Source xsi:type="ColumnBinding">
+                        <TableID>dbo_DimSalesTerritory</TableID>
+                        <ColumnID>SalesTerritoryGroup</ColumnID>
+                    </Source>
+                    <DataType>WChar</DataType>
+                    <DataSize>50</DataSize>
+                </KeyColumn>
+            </KeyColumns>
+            <NameColumn>
+                <Source xsi:type="ColumnBinding">
+                    <TableID>dbo_DimSalesTerritory</TableID>
+                    <ColumnID>SalesTerritoryGroup</ColumnID>
+                </Source>
+                <DataType>WChar</DataType>
+                <DataSize>50</DataSize>
+            </NameColumn>
+        </Attribute>
+        <Attribute>
+            <ID>Sales Territory Country</ID>
+            <Name>Sales Territory Country</Name>
+            <KeyColumns>
+                <KeyColumn>
+                    <Source xsi:type="ColumnBinding">
+                        <TableID>dbo_DimSalesTerritory</TableID>
+                        <ColumnID>SalesTerritoryCountry</ColumnID>
+                    </Source>
+                    <DataType>WChar</DataType>
+                    <DataSize>50</DataSize>
+                </KeyColumn>
+            </KeyColumns>
+            <AttributeRelationships>
+                <AstNode>
+                    <AttributeID>Sales Territory Group</AttributeID>
+                    <Name>Sales Territory Group</Name>
+                </AstNode>
+            </AttributeRelationships>
+            <NameColumn>
+                <Source xsi:type="ColumnBinding">
+                    <TableID>dbo_DimSalesTerritory</TableID>
+                    <ColumnID>SalesTerritoryCountry</ColumnID>
+                </Source>
+                <DataType>WChar</DataType>
+                <DataSize>50</DataSize>
+            </NameColumn>
+        </Attribute>
+    </Attributes>
+    <Hierarchies>
+        <Hierarchy>
+            <ID>Sales Territory</ID>
+            <Name>Sales Territory</Name>
+            <Levels>
+                <Level>
+                    <ID>Group</ID>
+                    <Name>Group</Name>
+                    <SourceAttributeID>Sales Territory Group</SourceAttributeID>
+                </Level>
+                <Level>
+                    <ID>Country</ID>
+                    <Name>Country</Name>
+                    <SourceAttributeID>Sales Territory Country</SourceAttributeID>
+                </Level>
+                <Level>
+                    <ID>Region</ID>
+                    <Name>Region</Name>
+                    <SourceAttributeID>Sales Territory Region</SourceAttributeID>
+                </Level>
+            </Levels>
+        </Hierarchy>
+    </Hierarchies>
+    <Source xsi:type="DataSourceViewBinding">
+        <DataSourceViewID>AdventureWorksDW</DataSourceViewID>
+    </Source>
+    <ErrorConfiguration />
+    <CurrentStorageMode>Molap</CurrentStorageMode>
+    <AttributeAllMemberName>All Sales Territories</AttributeAllMemberName>
+</Dimension>

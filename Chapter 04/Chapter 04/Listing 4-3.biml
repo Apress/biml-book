@@ -1,0 +1,22 @@
+
+<# var sourceConnection = SchemaManager.CreateConnectionNode("AW2014", "Data Source=.;Initial Catalog=AdventureWorks2014;Provider=SQLNCLI11;Integrated Security=SSPI;"); #>
+
+<# var sourceMetadata = sourceConnection.ImportDB("", "", ImportOptions.ExcludeCheckConstraint | ImportOptions.ExcludeColumnDefault | ImportOptions.ExcludeForeignKey | ImportOptions.ExcludeIdentity | ImportOptions.ExcludeIndex | ImportOptions.ExcludePrimaryKey | ImportOptions.ExcludeUniqueKey | ImportOptions.ExcludeViews); #>
+
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Connections>
+    <OleDbConnection Name="Staging" ConnectionString="Data Source=.;Initial Catalog=Staging;Provider=SQLNCLI11;Integrated Security=SSPI;" />
+  </Connections>
+  <Packages>
+    <Package Name="DropAndCreateStagingTables">
+      <Tasks>
+        <# foreach (var table in sourceMetadata.TableNodes) { #>
+          <ExecuteSQL Name="Drop and Create <#=table.Schema#> <#=table.Name#>" ConnectionName="Staging">
+            <DirectInput><#=table.GetDropAndCreateDdl()#></DirectInput>
+          </ExecuteSQL>
+        <# } #>
+      </Tasks>
+    </Package>
+  </Packages>
+</Biml>
+

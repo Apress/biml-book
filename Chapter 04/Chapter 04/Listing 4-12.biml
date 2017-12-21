@@ -1,0 +1,12 @@
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Connections>
+    <ExcelConnection Name="MyExcel" ConnectionString="Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Flatfiles\XLS\MyExcel.xlsx;Extended Properties=&quot;Excel 12.0 XML;HDR=YES&quot;;" />
+    <OleDbConnection Name="Target" ConnectionString="Data Source=localhost;initial catalog=MySimpleBiml_Destination;provider=SQLNCLI11;integrated security=SSPI"/>
+  </Connections>
+  <Databases>
+    <Database Name="MySimpleBiml_Destination" ConnectionName="Target"/>
+  </Databases>
+  <Schemas>
+    <Schema Name="dbo" DatabaseName="MySimpleBiml_Destination"/>
+  </Schemas>
+</Biml>

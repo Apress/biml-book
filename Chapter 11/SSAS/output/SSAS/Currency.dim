@@ -1,0 +1,35 @@
+<Dimension xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ddl2="http://schemas.microsoft.com/analysisservices/2003/engine/2" xmlns:ddl2_2="http://schemas.microsoft.com/analysisservices/2003/engine/2/2" xmlns:ddl100_100="http://schemas.microsoft.com/analysisservices/2008/engine/100/100" xmlns:dwd="http://schemas.microsoft.com/DataWarehouse/Designer/1.0" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+    <ID>Currency</ID>
+    <Name>Currency</Name>
+    <Attributes>
+        <Attribute>
+            <ID>Currency</ID>
+            <Name>Currency</Name>
+            <KeyColumns>
+                <KeyColumn>
+                    <Source xsi:type="ColumnBinding">
+                        <TableID>dbo_DimCurrency</TableID>
+                        <ColumnID>CurrencyKey</ColumnID>
+                    </Source>
+                    <DataType>Integer</DataType>
+                </KeyColumn>
+            </KeyColumns>
+            <NameColumn>
+                <Source xsi:type="ColumnBinding">
+                    <TableID>dbo_DimCurrency</TableID>
+                    <ColumnID>CurrencyName</ColumnID>
+                </Source>
+                <DataType>WChar</DataType>
+                <DataSize>50</DataSize>
+            </NameColumn>
+            <Type>CurrencyIsoCode</Type>
+            <Usage>Key</Usage>
+        </Attribute>
+    </Attributes>
+    <Source xsi:type="DataSourceViewBinding">
+        <DataSourceViewID>AdventureWorksDW</DataSourceViewID>
+    </Source>
+    <ErrorConfiguration />
+    <Type>Currency</Type>
+    <CurrentStorageMode>Molap</CurrentStorageMode>
+</Dimension>

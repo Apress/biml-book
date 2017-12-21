@@ -1,0 +1,9 @@
+﻿<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Connections>
+<#
+var metadata = MD_ModelWrapper.Load(RootNode.MetadataInstances["MD_Instance"]);
+foreach (var connection in metadata.Connections) { #>
+    <Connection Name="<#=connection.Name#>" ConnectionString="<#=connection.ConnString#>" />
+<# } #>
+  </Connections>
+</Biml>

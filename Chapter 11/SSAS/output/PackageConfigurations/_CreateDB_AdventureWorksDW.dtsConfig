@@ -1,0 +1,3 @@
+<DTSConfiguration><DTSConfigurationHeading><DTSConfigurationFileInfo /></DTSConfigurationHeading>
+<Configuration ConfiguredType="Property" Path="\Package.Connections[_CreateDB_AdventureWorksDW].Properties[ConnectionString]" ValueType="String"><ConfiguredValue>Provider=SQLNCLI11;Data Source=localhost;Integrated Security=SSPI</ConfiguredValue></Configuration>
+</DTSConfiguration>

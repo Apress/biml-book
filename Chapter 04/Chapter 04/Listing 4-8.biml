@@ -1,0 +1,10 @@
+<#@ template tier="0" #>
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Connections>
+    <OleDbConnection Name="AW2014" ConnectionString="Data Source=.;Initial Catalog=AdventureWorks2014;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
+    <OleDbConnection Name="Staging" ConnectionString="Data Source=.;Initial Catalog=Staging;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
+  </Connections>
+  <Databases>
+    <Database Name="Staging" ConnectionName="Staging" />
+  </Databases>
+</Biml>

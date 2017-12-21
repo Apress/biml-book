@@ -1,0 +1,6 @@
+﻿<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+    <TabularModels>
+        <TabularModel Name="TabularModel1">
+        </TabularModel>
+    </TabularModels>
+</Biml>

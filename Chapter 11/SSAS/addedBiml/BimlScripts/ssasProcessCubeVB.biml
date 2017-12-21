@@ -1,0 +1,36 @@
+﻿<#@ template language="VB" #>
+<#@ assembly name="C:\Program Files (x86)\Microsoft SQL Server\120\SDK\Assemblies\Microsoft.AnalysisServices.dll" #>
+<#@ import namespace="Microsoft.AnalysisServices" #>
+<# Dim OLAPServer as String = "localhost" 
+   Dim OLAPDB as string = "MyCubeDB"
+   Dim OLAPConnection as new Server
+   OLAPConnection.connect(OLAPServer)#>
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Packages>
+    <Package Name="Process_SSAS" ConstraintMode="Linear">
+      <Tasks>
+        <AnalysisServicesProcessing Name="Process Dimensions" ConnectionName="AW_Cube">
+          <ProcessingConfigurations>
+            <# for each olapdim as dimension in olapconnection.databases(olapdb).dimensions #>
+            <DimensionProcessingConfiguration DatabaseId="<#= OLAPDB #>" ProcessingOption="ProcessUpdate" DimensionId="<#= olapdim.id #>" />
+            <# next #>
+          </ProcessingConfigurations>
+          <ErrorConfiguration KeyDuplicate="IgnoreError" KeyErrorAction="ConvertToUnknown" KeyErrorLimit="0" KeyNotFound="IgnoreError" NullKeyNotAllowed="IgnoreError" NullKeyConvertedToUnknown="IgnoreError"/>
+        </AnalysisServicesProcessing>
+        <Container Name="Process Cubes" ConstraintMode="Parallel">
+          <Tasks>
+            <# for each olapcube as cube in olapconnection.databases(olapdb).cubes #>
+            <AnalysisServicesProcessing Name="Process Cube <#= olapcube.name #>" ConnectionName="AW_Cube" ProcessingOrder="Parallel">
+              <ProcessingConfigurations>
+                <CubeProcessingConfiguration DatabaseID="<#= olapdb #>" ProcessingOption="ProcessFull" CubeId="<#= olapcube.id #>"/>
+              </ProcessingConfigurations>
+              <ErrorConfiguration KeyDuplicate="IgnoreError" KeyErrorAction="ConvertToUnknown" KeyErrorLimit="0" KeyNotFound="IgnoreError" NullKeyNotAllowed="IgnoreError" NullKeyConvertedToUnknown="IgnoreError"/>
+            </AnalysisServicesProcessing>
+            <# next #>
+          </Tasks>
+        </Container>
+      </Tasks>
+    </Package>
+  </Packages>
+</Biml>
+<# OLAPConnection.Disconnect #>

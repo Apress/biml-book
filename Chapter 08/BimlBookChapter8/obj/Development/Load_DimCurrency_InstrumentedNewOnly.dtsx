@@ -1,0 +1,657 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="8/5/2017 1:28:15 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="VMDEMO"
+  DTS:CreatorName="A. Ray Leonard"
+  DTS:DTSID="{C54ADB1C-EF60-41E7-B955-0E4FBB0D9574}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="14.0.0600.250"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="Load_DimCurrency_InstrumentedNewOnly"
+  DTS:VersionGUID="{1180F9AE-A2E2-42EF-8693-03E3E9DC1E6B}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[ContosoSource]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{EDA032DC-3B56-4F96-B4CC-4439316AFAB5}"
+      DTS:ObjectName="ContosoSource">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="data source=vmDemo\MBF;initial catalog=ContosoOLTP;provider=SQLNCLI11;integrated security=SSPI;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[ContosoTarget]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{4F30FE26-2BC2-4A81-B739-CB1C25BF91EB}"
+      DTS:ObjectName="ContosoTarget">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="data source=vmDemo\MBF;initial catalog=ContosoRetailDW;provider=SQLNCLI11;integrated security=SSPI;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\DFT Load DimCurrency"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:DTSID="{553EE278-07B4-4303-8310-04CB6073A581}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DFT Load DimCurrency"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          BLOBTempStoragePath=""
+          bufferTempStoragePath=""
+          version="1">
+          <components>
+            <component
+              refId="Package\DFT Load DimCurrency\DER ETL Instrumentation"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              name="DER ETL Instrumentation"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\DFT Load DimCurrency\DER ETL Instrumentation.Inputs[LkUp Correlate_NoMatch_DER ETL Instrumentation]"
+                  name="LkUp Correlate_NoMatch_DER ETL Instrumentation">
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT Load DimCurrency\DER ETL Instrumentation.Outputs[Output]"
+                  exclusionGroup="1"
+                  name="Output"
+                  synchronousInputId="Package\DFT Load DimCurrency\DER ETL Instrumentation.Inputs[LkUp Correlate_NoMatch_DER ETL Instrumentation]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT Load DimCurrency\DER ETL Instrumentation.Outputs[Output].Columns[ETLLoadID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\DFT Load DimCurrency\DER ETL Instrumentation.Outputs[Output].Columns[ETLLoadID]"
+                      name="ETLLoadID"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_I4)@[System::ServerExecutionID]</property>
+                        <property
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_I4)@[System::ServerExecutionID]</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT Load DimCurrency\DER ETL Instrumentation.Outputs[Output].Columns[LoadDate]"
+                      dataType="dbDate"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\DFT Load DimCurrency\DER ETL Instrumentation.Outputs[Output].Columns[LoadDate]"
+                      name="LoadDate"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">@[System::StartTime]</property>
+                        <property
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">@[System::StartTime]</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DFT Load DimCurrency\DER ETL Instrumentation.Outputs[Error]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Error"
+                  synchronousInputId="Package\DFT Load DimCurrency\DER ETL Instrumentation.Inputs[LkUp Correlate_NoMatch_DER ETL Instrumentation]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT Load DimCurrency\DER ETL Instrumentation.Outputs[Error].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT Load DimCurrency\DER ETL Instrumentation.Outputs[Error].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT Load DimCurrency\DER ETL Instrumentation.Outputs[Error].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT Load DimCurrency\DER ETL Instrumentation.Outputs[Error].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT Load DimCurrency\LkUp Correlate"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              name="LkUp Correlate"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement that generates the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">
+                            Select [CurrencyLabel] From [dbo].[DimCurrency]
+                        </property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (Select [CurrencyLabel] From [dbo].[DimCurrency]) [refTable] 
+			                  where [refTable].[CurrencyLabel] = ?
+                        </property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of connection used to access the reference dataset."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the cache type of the lookup table."
+                  name="CacheType"
+                  typeConverter="CacheType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">1</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indicates whether to reference metadata in an XML format."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;
+  &lt;referenceColumns&gt;
+    &lt;referenceColumn name="CurrencyLabel" dataType="DT_WSTR" length="10" precision="0" scale="0" codePage="0" /&gt;
+  &lt;/referenceColumns&gt;
+&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                  name="ParameterMap">#{Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Output].Columns[CurrencyLabel]};#{Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Output].Columns[CurrencyName]};#{Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Output].Columns[CurrencyDescription]};#{Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Output].Columns[UpdateDate]};</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DFT Load DimCurrency\LkUp Correlate.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[ContosoTarget]"
+                  connectionManagerRefId="Package.ConnectionManagers[ContosoTarget]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\DFT Load DimCurrency\LkUp Correlate.Inputs[OLEDBSrc Currency_Output_LkUp Correlate]"
+                  name="OLEDBSrc Currency_Output_LkUp Correlate">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DFT Load DimCurrency\LkUp Correlate.Inputs[OLEDBSrc Currency_Output_LkUp Correlate].Columns[CurrencyLabel]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="CurrencyLabel"
+                      lineageId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Output].Columns[CurrencyLabel]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">CurrencyLabel</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT Load DimCurrency\LkUp Correlate.Outputs[Match]"
+                  errorOrTruncationOperation="Lookup"
+                  exclusionGroup="1"
+                  name="Match"
+                  synchronousInputId="Package\DFT Load DimCurrency\LkUp Correlate.Inputs[OLEDBSrc Currency_Output_LkUp Correlate]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DFT Load DimCurrency\LkUp Correlate.Outputs[NoMatch]"
+                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                  exclusionGroup="1"
+                  name="NoMatch"
+                  synchronousInputId="Package\DFT Load DimCurrency\LkUp Correlate.Inputs[OLEDBSrc Currency_Output_LkUp Correlate]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DFT Load DimCurrency\LkUp Correlate.Outputs[Error]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Error"
+                  synchronousInputId="Package\DFT Load DimCurrency\LkUp Correlate.Inputs[OLEDBSrc Currency_Output_LkUp Correlate]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT Load DimCurrency\LkUp Correlate.Outputs[Error].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT Load DimCurrency\LkUp Correlate.Outputs[Error].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT Load DimCurrency\LkUp Correlate.Outputs[Error].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT Load DimCurrency\LkUp Correlate.Outputs[Error].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT Load DimCurrency\OLEDBDest DimCurrency"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              name="OLEDBDest DimCurrency"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[DimCurrency]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DFT Load DimCurrency\OLEDBDest DimCurrency.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[ContosoTarget]"
+                  connectionManagerRefId="Package.ConnectionManagers[ContosoTarget]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\DFT Load DimCurrency\OLEDBDest DimCurrency.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimCurrency]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="DER ETL Instrumentation_Output_OLEDBDest DimCurrency">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DFT Load DimCurrency\OLEDBDest DimCurrency.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimCurrency].Columns[ETLLoadID]"
+                      cachedDataType="i4"
+                      cachedName="ETLLoadID"
+                      externalMetadataColumnId="Package\DFT Load DimCurrency\OLEDBDest DimCurrency.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimCurrency].ExternalColumns[ETLLoadID]"
+                      lineageId="Package\DFT Load DimCurrency\DER ETL Instrumentation.Outputs[Output].Columns[ETLLoadID]" />
+                    <inputColumn
+                      refId="Package\DFT Load DimCurrency\OLEDBDest DimCurrency.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimCurrency].Columns[LoadDate]"
+                      cachedDataType="dbDate"
+                      cachedName="LoadDate"
+                      externalMetadataColumnId="Package\DFT Load DimCurrency\OLEDBDest DimCurrency.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimCurrency].ExternalColumns[LoadDate]"
+                      lineageId="Package\DFT Load DimCurrency\DER ETL Instrumentation.Outputs[Output].Columns[LoadDate]" />
+                    <inputColumn
+                      refId="Package\DFT Load DimCurrency\OLEDBDest DimCurrency.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimCurrency].Columns[CurrencyLabel]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="CurrencyLabel"
+                      externalMetadataColumnId="Package\DFT Load DimCurrency\OLEDBDest DimCurrency.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimCurrency].ExternalColumns[CurrencyLabel]"
+                      lineageId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Output].Columns[CurrencyLabel]" />
+                    <inputColumn
+                      refId="Package\DFT Load DimCurrency\OLEDBDest DimCurrency.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimCurrency].Columns[CurrencyName]"
+                      cachedDataType="wstr"
+                      cachedLength="20"
+                      cachedName="CurrencyName"
+                      externalMetadataColumnId="Package\DFT Load DimCurrency\OLEDBDest DimCurrency.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimCurrency].ExternalColumns[CurrencyName]"
+                      lineageId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Output].Columns[CurrencyName]" />
+                    <inputColumn
+                      refId="Package\DFT Load DimCurrency\OLEDBDest DimCurrency.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimCurrency].Columns[CurrencyDescription]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="CurrencyDescription"
+                      externalMetadataColumnId="Package\DFT Load DimCurrency\OLEDBDest DimCurrency.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimCurrency].ExternalColumns[CurrencyDescription]"
+                      lineageId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Output].Columns[CurrencyDescription]" />
+                    <inputColumn
+                      refId="Package\DFT Load DimCurrency\OLEDBDest DimCurrency.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimCurrency].Columns[UpdateDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="UpdateDate"
+                      externalMetadataColumnId="Package\DFT Load DimCurrency\OLEDBDest DimCurrency.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimCurrency].ExternalColumns[UpdateDate]"
+                      lineageId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Output].Columns[UpdateDate]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\DFT Load DimCurrency\OLEDBDest DimCurrency.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimCurrency].ExternalColumns[CurrencyKey]"
+                      dataType="i4"
+                      name="CurrencyKey" />
+                    <externalMetadataColumn
+                      refId="Package\DFT Load DimCurrency\OLEDBDest DimCurrency.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimCurrency].ExternalColumns[CurrencyLabel]"
+                      dataType="wstr"
+                      length="10"
+                      name="CurrencyLabel" />
+                    <externalMetadataColumn
+                      refId="Package\DFT Load DimCurrency\OLEDBDest DimCurrency.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimCurrency].ExternalColumns[CurrencyName]"
+                      dataType="wstr"
+                      length="20"
+                      name="CurrencyName" />
+                    <externalMetadataColumn
+                      refId="Package\DFT Load DimCurrency\OLEDBDest DimCurrency.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimCurrency].ExternalColumns[CurrencyDescription]"
+                      dataType="wstr"
+                      length="50"
+                      name="CurrencyDescription" />
+                    <externalMetadataColumn
+                      refId="Package\DFT Load DimCurrency\OLEDBDest DimCurrency.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimCurrency].ExternalColumns[ETLLoadID]"
+                      dataType="i4"
+                      name="ETLLoadID" />
+                    <externalMetadataColumn
+                      refId="Package\DFT Load DimCurrency\OLEDBDest DimCurrency.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimCurrency].ExternalColumns[LoadDate]"
+                      dataType="dbTimeStamp"
+                      name="LoadDate" />
+                    <externalMetadataColumn
+                      refId="Package\DFT Load DimCurrency\OLEDBDest DimCurrency.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimCurrency].ExternalColumns[UpdateDate]"
+                      dataType="dbTimeStamp"
+                      name="UpdateDate" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT Load DimCurrency\OLEDBDest DimCurrency.Outputs[Error]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Error"
+                  synchronousInputId="Package\DFT Load DimCurrency\OLEDBDest DimCurrency.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimCurrency]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT Load DimCurrency\OLEDBDest DimCurrency.Outputs[Error].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT Load DimCurrency\OLEDBDest DimCurrency.Outputs[Error].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT Load DimCurrency\OLEDBDest DimCurrency.Outputs[Error].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT Load DimCurrency\OLEDBDest DimCurrency.Outputs[Error].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT Load DimCurrency\OLEDBSrc Currency"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              name="OLEDBSrc Currency"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [CurrencyLabel]
+,[CurrencyName]
+,[CurrencyDescription]
+,[UpdateDate]
+FROM [dbo].[Currency]
+</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[ContosoSource]"
+                  connectionManagerRefId="Package.ConnectionManagers[ContosoSource]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Output]"
+                  name="Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Output].Columns[CurrencyLabel]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Output].ExternalColumns[CurrencyLabel]"
+                      length="10"
+                      lineageId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Output].Columns[CurrencyLabel]"
+                      name="CurrencyLabel"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Output].Columns[CurrencyName]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Output].ExternalColumns[CurrencyName]"
+                      length="20"
+                      lineageId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Output].Columns[CurrencyName]"
+                      name="CurrencyName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Output].Columns[CurrencyDescription]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Output].ExternalColumns[CurrencyDescription]"
+                      length="50"
+                      lineageId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Output].Columns[CurrencyDescription]"
+                      name="CurrencyDescription"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Output].Columns[UpdateDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Output].ExternalColumns[UpdateDate]"
+                      lineageId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Output].Columns[UpdateDate]"
+                      name="UpdateDate"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Output].ExternalColumns[CurrencyLabel]"
+                      dataType="wstr"
+                      length="10"
+                      name="CurrencyLabel" />
+                    <externalMetadataColumn
+                      refId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Output].ExternalColumns[CurrencyName]"
+                      dataType="wstr"
+                      length="20"
+                      name="CurrencyName" />
+                    <externalMetadataColumn
+                      refId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Output].ExternalColumns[CurrencyDescription]"
+                      dataType="wstr"
+                      length="50"
+                      name="CurrencyDescription" />
+                    <externalMetadataColumn
+                      refId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Output].ExternalColumns[UpdateDate]"
+                      dataType="dbTimeStamp"
+                      name="UpdateDate" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Error]"
+                  isErrorOut="true"
+                  name="Error">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Error].Columns[CurrencyLabel]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Error].Columns[CurrencyLabel]"
+                      name="CurrencyLabel" />
+                    <outputColumn
+                      refId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Error].Columns[CurrencyName]"
+                      dataType="wstr"
+                      length="20"
+                      lineageId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Error].Columns[CurrencyName]"
+                      name="CurrencyName" />
+                    <outputColumn
+                      refId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Error].Columns[CurrencyDescription]"
+                      dataType="wstr"
+                      length="50"
+                      lineageId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Error].Columns[CurrencyDescription]"
+                      name="CurrencyDescription" />
+                    <outputColumn
+                      refId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Error].Columns[UpdateDate]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Error].Columns[UpdateDate]"
+                      name="UpdateDate" />
+                    <outputColumn
+                      refId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Error].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Error].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Error].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Error].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\DFT Load DimCurrency.Paths[DER ETL Instrumentation_Output_OLEDBDest DimCurrency]"
+              endId="Package\DFT Load DimCurrency\OLEDBDest DimCurrency.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimCurrency]"
+              name="DER ETL Instrumentation_Output_OLEDBDest DimCurrency"
+              startId="Package\DFT Load DimCurrency\DER ETL Instrumentation.Outputs[Output]" />
+            <path
+              refId="Package\DFT Load DimCurrency.Paths[LkUp Correlate_NoMatch_DER ETL Instrumentation]"
+              endId="Package\DFT Load DimCurrency\DER ETL Instrumentation.Inputs[LkUp Correlate_NoMatch_DER ETL Instrumentation]"
+              name="LkUp Correlate_NoMatch_DER ETL Instrumentation"
+              startId="Package\DFT Load DimCurrency\LkUp Correlate.Outputs[NoMatch]" />
+            <path
+              refId="Package\DFT Load DimCurrency.Paths[OLEDBSrc Currency_Output_LkUp Correlate]"
+              endId="Package\DFT Load DimCurrency\LkUp Correlate.Inputs[OLEDBSrc Currency_Output_LkUp Correlate]"
+              name="OLEDBSrc Currency_Output_LkUp Correlate"
+              startId="Package\DFT Load DimCurrency\OLEDBSrc Currency.Outputs[Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+</DTS:Executable>

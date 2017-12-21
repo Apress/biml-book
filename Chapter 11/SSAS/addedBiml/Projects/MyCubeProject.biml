@@ -1,0 +1,14 @@
+﻿<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Projects>
+    <CubeProject Name="MyCubeProject">
+      <Cubes>
+        <Cube CubeName="MyCube" />
+      </Cubes>
+      <Dimensions>
+        <Dimension DimensionName="AdventureWorksDW.dbo.DimCurrency.Currency" />
+        <Dimension DimensionName="AdventureWorksDW.dbo.DimDate.Date" />
+        <Dimension DimensionName="AdventureWorksDW.dbo.DimSalesTerritory.Sales Territory" />
+      </Dimensions>
+    </CubeProject>
+  </Projects>
+</Biml>

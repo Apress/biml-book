@@ -1,0 +1,9 @@
+﻿<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+    <Tables>
+        <Table Name="BimlTable" SchemaName="">
+            <Keys>
+                <PrimaryKey Name="PK_BimlTable" Clustered="true" />
+            </Keys>
+        </Table>
+    </Tables>
+</Biml>

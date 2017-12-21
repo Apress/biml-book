@@ -1,0 +1,2 @@
+<#@ property name="tableNode" type="AstTableNode" #>
+<#= tableNode.GetDropAndCreateDdl() #>

@@ -1,0 +1,11 @@
+<#@ import namespace="System.IO" #>
+<#
+var root = @"C:\Temp\"; 
+foreach (var tableNode in RootNode.Tables) { 
+  File.WriteAllText
+  (
+    root + tableNode.SchemaQualifiedName + ".sql", 
+    tableNode.GetDropAndCreateDdl()
+  );
+}
+#>

@@ -1,0 +1,4 @@
+<#@ template language="VB" optionexplicit="False"#>
+<#  for each tableNode in RootNode.Tables #>
+  <#=tableNode.GetDropAndCreateDdl()#> 
+<# next #>

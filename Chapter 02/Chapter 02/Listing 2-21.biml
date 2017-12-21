@@ -1,0 +1,8 @@
+<#@ template tier="0" #>
+
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Connections>
+    <OleDbConnection Name="Source" ConnectionString="Provider=SQLOLEDB.1;Data Source=.;Initial Catalog=AdventureWorks;Integrated Security=SSPI;" />
+    <OleDbConnection Name="Stage" ConnectionString="Provider=SQLOLEDB.1;Data Source=.;Initial Catalog=Stage; Integrated Security=SSPI;" />
+  </Connections>
+</Biml>

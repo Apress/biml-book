@@ -1,0 +1,100 @@
+﻿<#@ import namespace="System.Data" #>
+<#
+var connectionString = @"Provider=SQLNCLI11;Data Source=.;Integrated Security=SSPI;Initial Catalog=BRMetadata;";
+
+var sqlCon = @"Select ConnectionName, ConnectionString From [di].[Connections]";
+var sqlDb = @"Select d.DatabaseName, c.ConnectionName From [di].[Databases] d JOIN [di].[Connections] c ON d.ConnectionID = c.ConnectionID";
+var sqlSch = @"Select s.SchemaName, d.DatabaseName From [di].[Schemas] s JOIN [di].[Databases] d ON s.DatabaseID = d.DatabaseID";
+var sqlTbl = @"Select t.TableName, p.PatternName, s.SchemaName From [di].[Tables] t JOIN [di].[Schemas] s ON t.SchemaID = s.SchemaID JOIN [di].[TablePatterns] tp ON t.TableID = tp.TableID JOIN [di].[Patterns] p ON tp.PatternID = p.PatternID";
+var sqlCol = @"Select c.ColumnName, c.DataType, c.Length, c.IsNullable, c.IsIdentity, t.TableName From [di].[Columns] c JOIN [di].[Tables] t ON c.TableID = t.TableID";
+
+var conDataTable = ExternalDataAccess.GetDataTable(connectionString, sqlCon);
+var dbDataTable = ExternalDataAccess.GetDataTable(connectionString, sqlDb);
+var schDataTable = ExternalDataAccess.GetDataTable(connectionString, sqlSch);
+var tblDataTable = ExternalDataAccess.GetDataTable(connectionString, sqlTbl);
+var colDataTable = ExternalDataAccess.GetDataTable(connectionString, sqlCol);
+#>
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Metadata>
+    <MetadataInstance Name="BRMetadataInstance" MetadataModelName="BRMetadataModel">
+      <Entities>
+        <Entity Name="Connections" MetadataModelEntityName="BRMetadataModel.Connections">
+          <DataItems>
+            <# foreach (DataRow conRow in conDataTable.Rows) { #>
+            <DataItem Name="<#=conRow["ConnectionName"]#>">
+              <Properties>
+                <Property PropertyName="BRMetadataModel.Connections.ConnectionString">
+                  <Value><#=conRow["ConnectionString"]#></Value>
+                </Property>
+              </Properties>
+            </DataItem>
+            <# } #>
+          </DataItems>
+        </Entity>
+        <Entity Name="Databases" MetadataModelEntityName="BRMetadataModel.Databases">
+          <DataItems>
+            <# foreach (DataRow dbRow in dbDataTable.Rows) { #>
+            <DataItem Name="<#=dbRow["DatabaseName"]#>">
+              <Relationships>
+                <Relationship RelationshipName="BRMetadataModel.Databases.Connection" RelatedItemName="Connections.<#=dbRow["ConnectionName"]#>" />
+              </Relationships>
+            </DataItem>
+            <# } #>
+          </DataItems>
+        </Entity>
+        <Entity Name="Schemas" MetadataModelEntityName="BRMetadataModel.Schemas">
+          <DataItems>
+            <# foreach (DataRow schRow in schDataTable.Rows) { #>
+            <DataItem Name="<#=schRow["SchemaName"]#>">
+              <Relationships>
+                <Relationship RelationshipName="BRMetadataModel.Schemas.Database" RelatedItemName="Databases.<#=schRow["DatabaseName"]#>" />
+              </Relationships>
+            </DataItem>
+            <# } #>
+          </DataItems>
+        </Entity>
+        <Entity Name="Tables" MetadataModelEntityName="BRMetadataModel.Tables">
+          <DataItems>
+            <# foreach (DataRow tblRow in tblDataTable.Rows) { #>
+            <DataItem Name="<#=tblRow["TableName"]#>">
+              <Relationships>
+                <Relationship RelationshipName="BRMetadataModel.Tables.Schema" RelatedItemName="Schemas.<#=tblRow["SchemaName"]#>" />
+              </Relationships>
+              <Properties>
+                <Property PropertyName="BRMetadataModel.Columns.DataType">
+                  <Value><#=tblRow["PatternName"]#></Value>
+                </Property>
+              </Properties>
+            </DataItem>
+            <# } #>
+          </DataItems>
+        </Entity>
+        <Entity Name="Columns" MetadataModelEntityName="BRMetadataModel.Columns">
+          <DataItems>
+            <# foreach (DataRow colRow in colDataTable.Rows) { #>
+            <DataItem Name="<#=colRow["ColumnName"]#>">
+              <Relationships>
+                <Relationship RelationshipName="BRMetadataModel.Columns.Table" RelatedItemName="Tables.<#=colRow["TableName"]#>" />
+              </Relationships>
+              <Properties>
+                <Property PropertyName="BRMetadataModel.Columns.DataType">
+                  <Value><#=colRow["DataType"]#></Value>
+                </Property>
+                <Property PropertyName="BRMetadataModel.Columns.Length">
+                  <Value><#=colRow["Length"]#></Value>
+                </Property>
+                <Property PropertyName="BRMetadataModel.Columns.IsNullable">
+                  <Value><#=colRow["IsNullable"]#></Value>
+                </Property>
+                <Property PropertyName="BRMetadataModel.Columns.IsIdentity">
+                  <Value><#=colRow["IsIdentity"]#></Value>
+                </Property>
+              </Properties>
+            </DataItem>
+            <# } #>
+          </DataItems>
+        </Entity>
+      </Entities>
+    </MetadataInstance>
+  </Metadata>
+</Biml>

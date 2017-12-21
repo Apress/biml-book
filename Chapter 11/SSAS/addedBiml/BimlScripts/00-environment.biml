@@ -1,0 +1,41 @@
+﻿<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+    <Connections>
+        <AnalysisServicesConnection Name="AW_Cube" Server="localhost" Database="MyCubeDB" 
+			ConnectionString="Data Source=localhost;Initial Catalog=MyCubeDB;Provider=MSOLAP;Impersonation Level=Impersonate;" />
+        <OleDbConnection Name="AdventureWorksDW" ConnectionString="Provider=SQLNCLI11;Data Source=localhost;Initial Catalog=AdventureWorksDW2014;Integrated Security=SSPI;" />
+    </Connections>
+    <Databases>
+        <Database Name="AdventureWorksDW" ConnectionName="AdventureWorksDW" >
+			<PartitionFunctions>
+				<PartitionFunction Name="testFunction" BoundarySide="Right" DataType="Date">
+					<BoundaryValues>
+						<BoundaryValue>1900-01-01</BoundaryValue>
+                    </BoundaryValues>
+                </PartitionFunction>
+            </PartitionFunctions>
+			<PartitionSchemes>
+				<PartitionScheme Name="testScheme" PartitionFunctionName="testFunction">
+					<Filegroups>
+						<Filegroup>FG1</Filegroup>
+						<Filegroup>FG2</Filegroup>
+                    </Filegroups>
+                </PartitionScheme>
+            </PartitionSchemes>
+			<FileGroups>
+				<FileGroup Name="FG1">
+					<Files>
+						<File Name="F1" FilePath="F1.mdf"></File>
+                    </Files>
+                </FileGroup>
+				<FileGroup Name="FG2">
+					<Files>
+						<File Name="F2" FilePath="F2.ndf"></File>
+                    </Files>
+                </FileGroup>
+            </FileGroups>
+        </Database>
+    </Databases>
+    <Schemas>
+        <Schema Name="dbo" DatabaseName="AdventureWorksDW" />
+    </Schemas>
+</Biml>

@@ -1,0 +1,31 @@
+﻿<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+	<Packages>
+		<Package Name="BimlDesigner" ProtectionLevel="DontSaveSensitive" LogicalDisplayFolder="Staging">
+			<Tasks>
+				<Container Name="SEQC Run First" />
+				<Container Name="SEQC Run Second v0">
+					<PrecedenceConstraints>
+						<Inputs>
+							<Input OutputPathName="SEQC Run First.Output" />
+                        </Inputs>
+                    </PrecedenceConstraints>
+                </Container>
+				<Container Name="SEQC Run Second v1">
+					<PrecedenceConstraints>
+						<Inputs>
+							<Input OutputPathName="SEQC Run First.Output" />
+                        </Inputs>
+                    </PrecedenceConstraints>
+                </Container>
+				<Container Name="SEQC Run After Seconds">
+					<PrecedenceConstraints LogicalType="Or">
+						<Inputs>
+							<Input OutputPathName="SEQC Run Second v0.Output" />
+							<Input OutputPathName="SEQC Run Second v1.Output" />
+                        </Inputs>
+                    </PrecedenceConstraints>
+                </Container>				
+            </Tasks>
+        </Package>
+    </Packages>
+</Biml>

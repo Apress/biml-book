@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DTS:Executable
+  DTS:CreationDate="08/19/2017 16:07:21"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="VAUL0001"
+  DTS:CreatorName="peter"
+  DTS:DTSID="{99E037C6-EC1E-4038-A288-8B3A9970633B}"
+  DTS:EnableConfig="True"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion=""
+  DTS:LocaleID="3081"
+  DTS:ObjectName="AW_DW_dbo_FactInternetSales"
+  DTS:ProtectionLevel="0"
+  DTS:refId="Package"
+  DTS:VersionBuild="0"
+  DTS:VersionGUID="{0D065EDC-ABEF-4858-B8C9-2F080E47CF0E}"
+  DTS:VersionMajor="0" xmlns:DTS="www.microsoft.com/SqlServer/Dts">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{DBF2657B-EA8B-493E-B07F-1E451B91623B}"
+      DTS:ObjectName="AW_DWH"
+      DTS:refId="Package.ConnectionManagers[AW_DWH]">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="provider=SQLNCLI11;data source=.;integrated security=SSPI;initial catalog=AdventureWorksDW2014"></DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{55EEC779-040C-4B9F-B982-012197F239A2}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="__Table_DDL_dbo_FactInternetSales"
+      DTS:refId="Package\__Table_DDL_dbo_FactInternetSales"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="AW_DWH"
+          SQLTask:SqlStatementSource="&#xA;                            SET ANSI_NULLS ON&#xA;SET QUOTED_IDENTIFIER ON&#xA;GO&#xA;&#xA;-------------------------------------------------------------------&#xA;IF EXISTS (SELECT * from sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[FactInternetSales]') AND type IN (N'U'))&#xA;DROP TABLE [dbo].[FactInternetSales]&#xA;GO&#xA;&#xA;CREATE TABLE [dbo].[FactInternetSales]&#xA;(&#xA;-- Columns Definition&#xA; [OrderDateKey] int NOT NULL &#xA;, [ShipDateKey] int NOT NULL &#xA;, [CurrencyKey] int NOT NULL &#xA;, [SalesTerritoryKey] int NOT NULL &#xA;, [OrderQuantity] smallint NOT NULL &#xA;, [SalesAmount] money NOT NULL &#xA;&#xA;-- Constraints&#xA;&#xA;)&#xA;ON &quot;default&quot;&#xA;WITH (DATA_COMPRESSION = NONE)&#xA;GO&#xA;&#xA;-------------------------------------------------------------------&#xA;&#xA;ALTER TABLE [dbo].[FactInternetSales]  WITH CHECK ADD CONSTRAINT [FK_FactInternetSales_DimDate_OrderDateKey] FOREIGN KEY([OrderDateKey])&#xA;REFERENCES [dbo].[DimDate] ([DateKey])&#xA;GO&#xA;&#xA;ALTER TABLE [dbo].[FactInternetSales] CHECK CONSTRAINT [FK_FactInternetSales_DimDate_OrderDateKey]&#xA;GO&#xA;&#xA;ALTER TABLE [dbo].[FactInternetSales]  WITH CHECK ADD CONSTRAINT [FK_FactInternetSales_DimDate_ShipDateKey] FOREIGN KEY([ShipDateKey])&#xA;REFERENCES [dbo].[DimDate] ([DateKey])&#xA;GO&#xA;&#xA;ALTER TABLE [dbo].[FactInternetSales] CHECK CONSTRAINT [FK_FactInternetSales_DimDate_ShipDateKey]&#xA;GO&#xA;&#xA;ALTER TABLE [dbo].[FactInternetSales]  WITH CHECK ADD CONSTRAINT [FK_FactInternetSales_DimCurrency_CurrencyKey] FOREIGN KEY([CurrencyKey])&#xA;REFERENCES [dbo].[DimCurrency] ([CurrencyKey])&#xA;GO&#xA;&#xA;ALTER TABLE [dbo].[FactInternetSales] CHECK CONSTRAINT [FK_FactInternetSales_DimCurrency_CurrencyKey]&#xA;GO&#xA;&#xA;ALTER TABLE [dbo].[FactInternetSales]  WITH CHECK ADD CONSTRAINT [FK_FactInternetSales_DimSalesTerritory_SalesTerritoryKey] FOREIGN KEY([SalesTerritoryKey])&#xA;REFERENCES [dbo].[DimSalesTerritory] ([SalesTerritoryKey])&#xA;GO&#xA;&#xA;ALTER TABLE [dbo].[FactInternetSales] CHECK CONSTRAINT [FK_FactInternetSales_DimSalesTerritory_SalesTerritoryKey]&#xA;GO&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;                        " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask"></SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:Configurations>
+    <DTS:Configuration
+      DTS:ConfigurationString="C:\PackageConfigurations\AW_DWH.dtsConfig"
+      DTS:ConfigurationType="1"
+      DTS:CreationName=""
+      DTS:DTSID="{E2E7A75C-BDC3-42D0-A68E-FD966CF059DA}"
+      DTS:ObjectName="AW_DWH"></DTS:Configuration>
+  </DTS:Configurations>
+</DTS:Executable>

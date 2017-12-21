@@ -1,0 +1,44 @@
+<# 
+  var destinationSchema = "AW2014";
+  var sourceConnection = SchemaManager.CreateConnectionNode("Source", @"Data Source=.;Initial Catalog=AdventureWorks2014;Provider=SQLNCLI11;Integrated Security=SSPI;");
+  var sourceMetadata = sourceConnection.GetDatabaseSchema(ImportOptions.ExcludeViews);
+#>
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Connections>
+    <OleDbConnection Name="Admin" ConnectionString="Data Source=.;Initial Catalog=Admin;Provider=SQLNCLI11;Integrated Security=SSPI;" />
+    <OleDbConnection Name="AW2014" ConnectionString="Data Source=.;Initial Catalog=AdventureWorks2014;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
+    <OleDbConnection Name="Staging" ConnectionString="Data Source=.;Initial Catalog=Staging;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
+  </Connections>
+  <Packages>
+    <# foreach (var table in sourceMetadata.TableNodes) { #>
+    <Package Name="Load_<#=destinationSchema#>_<#=table.Schema#>_<#=table.Name#>" ConstraintMode="Linear">
+      <Variables>
+        <Variable Name="NewRows" DataType="Int32">0</Variable>
+      </Variables>
+      <Tasks>
+        <ExecuteSQL Name="Truncate <#=table.Schema#> <#=table.Name#>" ConnectionName="Staging">
+          <DirectInput>TRUNCATE TABLE <#=destinationSchema#>.<#=table.Schema#>_<#=table.Name#>
+          </DirectInput>
+        </ExecuteSQL>
+        <Dataflow Name="Load <#=table.Schema#> <#=table.Name#>">
+          <Transformations>
+            <OleDbSource Name="Source <#=table.Schema#> <#=table.Name#>" ConnectionName="WWI">
+              <ExternalTableInput Table="<#=table.SchemaQualifiedName#>" />
+            </OleDbSource>
+            <DerivedColumns Name="Add LoadDate">
+              <Columns>
+                <Column Name="LoadDate" DataType="DateTime">@[System::StartTime]</Column>
+              </Columns>
+            </DerivedColumns>
+            <RowCount Name="Count NewRows" VariableName="User.NewRows" />
+            <OleDbDestination Name="Destination <#=table.Schema#> <#=table.Name#>" ConnectionName="Staging">
+              <ExternalTableOutput Table="<#=destinationSchema#>.<#=table.Schema#>_<#=table.Name#>" />
+            </OleDbDestination>
+          </Transformations>
+        </Dataflow>
+        <#@ include file="LogRows.biml" #>
+      </Tasks>
+    </Package>
+    <# } #>
+  </Packages>
+</Biml>

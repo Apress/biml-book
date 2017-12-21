@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DTS:Executable
+  DTS:CreationDate="08/20/2017 08:35:50"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="VAUL0001"
+  DTS:CreatorName="peter"
+  DTS:DTSID="{E1122904-4C8F-4383-98C4-7E8DF543EC14}"
+  DTS:EnableConfig="True"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion=""
+  DTS:LocaleID="3081"
+  DTS:ObjectName="AdventureWorksDW_dbo_DimEmployee"
+  DTS:ProtectionLevel="0"
+  DTS:refId="Package"
+  DTS:VersionBuild="0"
+  DTS:VersionGUID="{14003D5F-BFAE-4F78-9B3A-378D47D4CAB0}"
+  DTS:VersionMajor="0" xmlns:DTS="www.microsoft.com/SqlServer/Dts">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{F91C3C8E-5819-4DEF-9B1F-3092729D48A7}"
+      DTS:ObjectName="AdventureWorksDW"
+      DTS:refId="Package.ConnectionManagers[AdventureWorksDW]">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="provider=SQLNCLI11;data source=localhost;initial catalog=AdventureWorksDW2014;integrated security=SSPI"></DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{2AF0EE15-1B9D-43BB-BC78-677F513B49C4}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="__Table_DDL_dbo_DimEmployee"
+      DTS:refId="Package\__Table_DDL_dbo_DimEmployee"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="AdventureWorksDW"
+          SQLTask:SqlStatementSource="&#xA;                            SET ANSI_NULLS ON&#xA;SET QUOTED_IDENTIFIER ON&#xA;GO&#xA;&#xA;-------------------------------------------------------------------&#xA;IF EXISTS (SELECT * from sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DimEmployee]') AND type IN (N'U'))&#xA;DROP TABLE [dbo].[DimEmployee]&#xA;GO&#xA;&#xA;CREATE TABLE [dbo].[DimEmployee]&#xA;(&#xA;-- Columns Definition&#xA; [EmployeeKey] int NOT NULL &#xA;, [ParentEmployeeKey] int &#xA;, [EmployeeNationalIDAlternateKey] nvarchar(15) &#xA;, [ParentEmployeeNationalIDAlternateKey] nvarchar(15) &#xA;, [SalesTerritoryKey] int &#xA;, [FirstName] nvarchar(50) NOT NULL &#xA;, [LastName] nvarchar(50) NOT NULL &#xA;, [MiddleName] nvarchar(50) &#xA;, [NameStyle] bit NOT NULL &#xA;, [Title] nvarchar(50) &#xA;, [HireDate] date &#xA;, [BirthDate] date &#xA;, [LoginID] nvarchar(256) &#xA;, [EmailAddress] nvarchar(50) &#xA;, [Phone] nvarchar(25) &#xA;, [MaritalStatus] nchar(1) &#xA;, [EmergencyContactName] nvarchar(50) &#xA;, [EmergencyContactPhone] nvarchar(25) &#xA;, [SalariedFlag] bit &#xA;, [Gender] nchar(1) &#xA;, [PayFrequency] tinyint &#xA;, [BaseRate] money &#xA;, [VacationHours] smallint &#xA;, [SickLeaveHours] smallint &#xA;, [CurrentFlag] bit NOT NULL &#xA;, [SalesPersonFlag] bit NOT NULL &#xA;, [DepartmentName] nvarchar(50) &#xA;, [StartDate] date &#xA;, [EndDate] date &#xA;, [Status] nvarchar(50) &#xA;, [EmployeePhoto] varbinary(max) &#xA;&#xA;-- Constraints&#xA;,CONSTRAINT [PK_DimEmployee] PRIMARY KEY CLUSTERED&#xA;(&#xA;  [EmployeeKey] Asc) WITH(PAD_INDEX = OFF,IGNORE_DUP_KEY = OFF) ON &quot;default&quot;&#xA;&#xA;)&#xA;ON &quot;default&quot;&#xA;WITH (DATA_COMPRESSION = NONE)&#xA;GO&#xA;&#xA;-------------------------------------------------------------------&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;                        " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask"></SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:Configurations>
+    <DTS:Configuration
+      DTS:ConfigurationString="C:\PackageConfigurations\AdventureWorksDW.dtsConfig"
+      DTS:ConfigurationType="1"
+      DTS:CreationName=""
+      DTS:DTSID="{824E93DA-5A36-48C6-83D1-CDD1FD9F8356}"
+      DTS:ObjectName="AdventureWorksDW"></DTS:Configuration>
+  </DTS:Configurations>
+</DTS:Executable>

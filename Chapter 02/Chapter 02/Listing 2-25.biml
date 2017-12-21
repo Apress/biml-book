@@ -1,0 +1,29 @@
+<#@ template tier="1" language="VB" optionexplicit="false" #>
+
+<#@ import namespace="Varigence.Biml.CoreLowerer.SchemaManagement" #>
+
+<# Dim conn=RootNode.OleDbConnections("Source") #>
+<# Dim tables=conn.GenerateTableNodes() #>
+
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Packages>
+    <#* Moved foreach From Here *#>
+    <Package Name="Source All" >
+      <Tasks>
+        <# for each tbl in tables #>
+        <Dataflow Name="Stage <#= tbl.Name #>" >
+          <Transformations>
+            <OleDbSource Name="Source <#= tbl.Name #>" ConnectionName="Source">
+              <ExternalTableInput Table="[<#= tbl.Schema.Name #>].[<#= tbl.Name #>]" />
+            </OleDbSource>
+            <OleDbDestination Name="Destination" ConnectionName="Stage">
+              <InputPath OutputPathName="Source <#= tbl.Name #>.Output" />
+              <ExternalTableOutput Table="[<#= tbl.Schema.Name #>].[<#= tbl.Name #>]" />
+            </OleDbDestination>
+          </Transformations>
+        </Dataflow>
+        <# next #>
+      </Tasks>
+    </Package>
+  </Packages>
+</Biml>

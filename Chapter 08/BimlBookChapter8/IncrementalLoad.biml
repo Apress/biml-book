@@ -1,0 +1,158 @@
+<#@ template designerbimlpath="Biml\Packages" tier="99" #>
+<#@ property name="sourceConnection" type="String" #>
+<#@ property name="targetConnection" type="String" #>
+<#@ property name="sourceTable" type="String" #>
+<#@ property name="srcTable" type="AstTableNode" #>
+<#@ property name="tgtTable" type="AstTableNode" #>
+<# 
+string joinClause = ""; 
+// get Columns
+Dictionary<string, string> cols = new Dictionary<string, string>();
+Dictionary<string, string> keyCols = new Dictionary<string, string>();
+string bkList = "";
+string parameters = "";
+foreach(var srcCol in srcTable.Columns) { // foreach srcCol
+    if(srcCol.GetTag("IsBusinessKey").ToString() == "true") { // if BK
+		if(bkList == "") { // if bkList is empty
+			joinClause += "On Upd." + srcCol.GetTag("MappedColumnName") + " = Dest." + srcCol.GetTag("MappedColumnName") + " ";
+        } // if bkList is empty
+		else { // if bkList is NOT empty
+			joinClause += "And Upd." + srcCol.GetTag("MappedColumnName") + " = Dest." + srcCol.GetTag("MappedColumnName") + " ";
+        } // if bkList is NOT empty						
+        bkList += "[" + srcCol.GetTag("MappedColumnName") + "],";
+        keyCols.Add(srcCol.Name, srcCol.GetTag("MappedColumnName"));
+    } // if BK
+    cols.Add(srcCol.Name, srcCol.GetTag("MappedColumnName"));
+	parameters += "<Parameter SourceColumn=\"" + srcCol.Name + "\" />";
+} // foreach srcCol
+
+// Lookup Select
+string lkupSelect = "Select ";
+string columns = "";
+foreach(KeyValuePair<string, string> c in cols) { // foreach keyValue
+	lkupSelect += "[" + c.Value + "] As [Dest_" + c.Key + "],";
+	columns += "<Column SourceColumn=\"" + c.Key + "\" TargetColumn=\"" + c.Value + "\" />";
+	} // foreach keyValue
+	lkupSelect = lkupSelect.Substring(0, lkupSelect.Length - 1);
+	lkupSelect += "From " + tgtTable.SchemaQualifiedName;
+	
+// Derived Column expression
+string exp="";
+foreach (var colex in srcTable.Columns) { // foreach colex
+	if(colex.GetTag("IsBusinessKey").ToString() != "true") { // if colex.GetTag("IsBusinessKey")
+	    if(colex.DataType.ToString() == "Guid") { // if colex.DataType
+	        exp += "((DT_WSTR,55)" + colex + " != (DT_WSTR,55)Dest_" + colex + ") || ";
+	    } // if colex.DataType
+	    else { // if !colex.DataType
+			switch(colex.DataType.ToString()) {
+				case "String":
+					exp += "((IsNull(" + colex + ") ? \"\" : " + colex + ") != (IsNull(Dest_" + colex + ") ? \"\" : Dest_" + colex + ")) || ";
+					break;
+				case "Int64":
+				case "Decimal":
+				case "Double":
+				case "Int32":
+				case "Int16":
+				case "Currency":
+				case "Single":
+				case "Time":
+					exp += "(IsNull(" + colex + ") ? 0 : " + colex + ") != (IsNull(Dest_" + colex + ") ? 0 : Dest_" + colex + ") || ";
+					break;
+				case "Boolean":
+					exp += "(IsNull(" + colex + ") ? False : " + colex + ") != (IsNull(Dest_" + colex + ") ? False : Dest_" + colex + ") || ";
+					break;
+				case "Date":
+				case "DateTime":
+				case "DateTime2":
+				case "DateTimeoffset":
+					exp += "(IsNull(" + colex + ") ? (DT_DBTimeStamp)\"1/1/1900\" : " + colex + ") != (IsNull(Dest_" + colex + ") ? (DT_DBTimeStamp)\"1/1/1900\" : Dest_" + colex + ") || ";
+					break;
+			} // switch
+		} // if !colex.DataType
+	} // if colex.GetTag("IsBusinessKey")
+} // foreach colex
+   #>
+    <Package Name="Load_<#=tgtTable.Name#>_IncrementalLoad" ProtectionLevel="EncryptSensitiveWithUserKey" ConstraintMode="Linear">
+        <Tasks>
+            <ExecuteSQL Name="Manage stage_<#=tgtTable.Name#>" ConnectionName="<#=targetConnection #>">
+				<DirectInput>
+					<#=tgtTable.GetDropAndCreateDdl().Replace(tgtTable.Name, "stage_" + tgtTable.Name) #>
+				</DirectInput>
+			</ExecuteSQL>
+            <Dataflow Name="DFT Load <#=sourceTable#> Source" >
+                <Transformations>
+                    <OleDbSource Name="OLEDBSrc <#=sourceTable#>" ConnectionName="<#=sourceConnection #>">
+                        <DirectInput>Select <#=srcTable.GetColumnList()#> From <#=srcTable.SchemaQualifiedName#></DirectInput>
+                    </OleDbSource>
+                    <DerivedColumns Name="DER <#=tgtTable.Name#> ETL Instrumentation">
+                        <InputPath OutputPathName="Load_<#=tgtTable.Name#>_IncrementalLoad.DFT Load <#=sourceTable#> Source.OLEDBSrc <#=sourceTable#>.Output" />
+                        <Columns>
+                            <Column Name="ETLLoadID" DataType="Int32">(DT_I4)@[System::ServerExecutionID]</Column>
+                            <Column Name="LoadDate" DataType="Date">@[System::StartTime]</Column>
+                        </Columns>
+                    </DerivedColumns>
+                    <Lookup Name="LkUp <#=tgtTable.Name#> Correlate" OleDbConnectionName="<#=targetConnection#>" NoMatchBehavior="RedirectRowsToNoMatchOutput">
+                        <InputPath OutputPathName="Load_<#=tgtTable.Name#>_IncrementalLoad.DFT Load <#=sourceTable#> Source.DER <#=tgtTable.Name#> ETL Instrumentation.Output" />
+						<Parameters>
+							<#=parameters #>
+                        </Parameters>
+                        <Inputs>
+                            <#
+                    	foreach(KeyValuePair<string, string> kc in keyCols) {
+                        #>
+                            <Column SourceColumn="<#=kc.Key#>" TargetColumn="Dest_<#=kc.Key#>" />
+                            <#
+                    	} // foreach keyvaluepair (keyCols)
+                    	#>
+                        </Inputs>
+                        <DirectInput><#=lkupSelect #></DirectInput>
+                        <Outputs>
+						<# foreach(KeyValuePair<string, string> c in cols) { #>
+						    <Column SourceColumn="Dest_<#=c.Key#>" TargetColumn="Dest_<#=c.Key#>" />
+						<# } #>
+					</Outputs>
+                    </Lookup>
+                    <OleDbDestination Name="OLEDBDest <#=tgtTable.Name#>" ConnectionName="<#=targetConnection #>">
+                        <InputPath OutputPathName="Load_<#=tgtTable.Name#>_IncrementalLoad.DFT Load <#=sourceTable#> Source.LkUp <#=tgtTable.Name#> Correlate.NoMatch" />
+						<Columns>
+							<#=columns #>
+                        </Columns>
+                        <ExternalTableOutput Table="<#=tgtTable.SchemaQualifiedName#>" />
+                    </OleDbDestination>
+                    <ConditionalSplit Name="Filter <#=tgtTable.Name#>">
+						<InputPath OutputPathName="Load_<#=tgtTable.Name#>_IncrementalLoad.DFT Load <#=sourceTable#> Source.LkUp <#=tgtTable.Name#> Correlate.Match" />
+						<OutputPaths>
+							<OutputPath Name="Changed Rows">
+								<Expression>
+									<#=exp.Substring(0, exp.Length - 4)#>
+								</Expression>
+							</OutputPath>
+						</OutputPaths>
+					</ConditionalSplit>
+					<OleDbDestination Name="OLEDBDest stage_<#=tgtTable.Name #>"
+					 ConnectionName="<#=targetConnection #>">
+						<InputPath OutputPathName="Filter <#=tgtTable.Name#>.Changed Rows" />
+						<Columns>
+							<#=columns #>
+                        </Columns>
+						<ExternalTableOutput Table="dbo.stage_<#=tgtTable.Name #>" />
+					</OleDbDestination>
+				</Transformations>
+            </Dataflow>
+            <ExecuteSQL Name="Apply stage_<#=tgtTable.Name #>" ConnectionName="<#=targetConnection #>">
+				<# string upd ="Update Dest Set ";
+					foreach (var colex in tgtTable.Columns) { 
+						if(colex.GetTag("IsBusinessKey").ToString() != "true") {
+						upd = upd + "\nDest.[" + colex + "] = Upd.[" + colex + "],"; 
+						}
+					}
+					var updc = upd.Substring(0,upd.Length - 1) 
+								+ " From " + tgtTable.SchemaQualifiedName
+								+ " Dest Join [dbo].[stage_" + tgtTable.Name
+								+ "] Upd " + joinClause;#>
+				<DirectInput>
+					<#=updc#>
+				</DirectInput>
+			</ExecuteSQL>
+        </Tasks>
+    </Package>

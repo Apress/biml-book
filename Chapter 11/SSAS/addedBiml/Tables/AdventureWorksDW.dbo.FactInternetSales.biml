@@ -1,0 +1,22 @@
+﻿<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Tables>
+    <Table Name="FactInternetSales" SchemaName="AdventureWorksDW.dbo">
+      <Columns>
+        <TableReference Name="OrderDateKey" TableName="AdventureWorksDW.dbo.DimDate" />
+        <TableReference Name="ShipDateKey" TableName="AdventureWorksDW.dbo.DimDate" />
+        <TableReference Name="CurrencyKey" TableName="AdventureWorksDW.dbo.DimCurrency" />
+        <TableReference Name="SalesTerritoryKey"  TableName="AdventureWorksDW.dbo.DimSalesTerritory" />
+        <Column Name="OrderQuantity" DataType="Int16" />
+        <Column Name="SalesAmount" DataType="Currency" />
+      </Columns>
+      <AnalysisMetadata>
+        <MeasureGroup Name="Internet Sales">
+          <Measures>
+            <Measure AggregateColumnName="OrderQuantity" Name="Order Quantity" />
+            <Measure AggregateColumnName="SalesAmount" Name="Sales Amount" />
+          </Measures>
+        </MeasureGroup>
+      </AnalysisMetadata>
+    </Table>
+  </Tables>
+</Biml>

@@ -1,0 +1,10 @@
+﻿<#@ code file="..\Code\FlatFileExtensions.cs" #>
+<#@ import namespace="System.IO" #>
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <FileFormats>
+    <# foreach(var file in Directory.GetFiles(@"C:\FlatFiles\Format")) { #>
+    <#= file.GetFlatFileFormatFromXml().GetBiml() #>
+    <# } #>
+  </FileFormats>
+</Biml>
+

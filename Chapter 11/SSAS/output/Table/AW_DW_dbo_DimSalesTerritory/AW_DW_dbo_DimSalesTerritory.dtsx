@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DTS:Executable
+  DTS:CreationDate="08/19/2017 16:07:21"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="VAUL0001"
+  DTS:CreatorName="peter"
+  DTS:DTSID="{314C0255-EF2C-4C6F-AF36-7CB6C5F20455}"
+  DTS:EnableConfig="True"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion=""
+  DTS:LocaleID="3081"
+  DTS:ObjectName="AW_DW_dbo_DimSalesTerritory"
+  DTS:ProtectionLevel="0"
+  DTS:refId="Package"
+  DTS:VersionBuild="0"
+  DTS:VersionGUID="{E6A5D865-F8A3-4E45-944A-37637CECFE91}"
+  DTS:VersionMajor="0" xmlns:DTS="www.microsoft.com/SqlServer/Dts">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{9E7E20EE-C3E3-46B4-9973-6BA923F89FD2}"
+      DTS:ObjectName="AW_DWH"
+      DTS:refId="Package.ConnectionManagers[AW_DWH]">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="provider=SQLNCLI11;data source=.;integrated security=SSPI;initial catalog=AdventureWorksDW2014"></DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{A9EF7303-83C3-4510-9B04-07772D625D50}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="__Table_DDL_dbo_DimSalesTerritory"
+      DTS:refId="Package\__Table_DDL_dbo_DimSalesTerritory"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="AW_DWH"
+          SQLTask:SqlStatementSource="&#xA;                            SET ANSI_NULLS ON&#xA;SET QUOTED_IDENTIFIER ON&#xA;GO&#xA;&#xA;-------------------------------------------------------------------&#xA;IF EXISTS (SELECT * from sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DimSalesTerritory]') AND type IN (N'U'))&#xA;DROP TABLE [dbo].[DimSalesTerritory]&#xA;GO&#xA;&#xA;CREATE TABLE [dbo].[DimSalesTerritory]&#xA;(&#xA;-- Columns Definition&#xA; [SalesTerritoryKey] int IDENTITY(1,1) NOT NULL &#xA;, [SalesTerritoryRegion] nvarchar(50) NOT NULL &#xA;, [SalesTerritoryCountry] nvarchar(50) NOT NULL &#xA;, [SalesTerritoryGroup] nvarchar(50) &#xA;&#xA;-- Constraints&#xA;,CONSTRAINT [PK_DimSalesTerritory_SalesTerritoryKey] PRIMARY KEY CLUSTERED&#xA;(&#xA;  [SalesTerritoryKey] Asc) WITH(PAD_INDEX = OFF,IGNORE_DUP_KEY = OFF) ON &quot;default&quot;&#xA;&#xA;)&#xA;ON &quot;default&quot;&#xA;WITH (DATA_COMPRESSION = NONE)&#xA;GO&#xA;&#xA;-------------------------------------------------------------------&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;                        " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask"></SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:Configurations>
+    <DTS:Configuration
+      DTS:ConfigurationString="C:\PackageConfigurations\AW_DWH.dtsConfig"
+      DTS:ConfigurationType="1"
+      DTS:CreationName=""
+      DTS:DTSID="{42D1C15B-7198-4171-9CA5-FFE91B3F656C}"
+      DTS:ObjectName="AW_DWH"></DTS:Configuration>
+  </DTS:Configurations>
+</DTS:Executable>

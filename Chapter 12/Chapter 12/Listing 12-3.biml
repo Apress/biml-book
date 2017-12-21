@@ -1,0 +1,13 @@
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Packages>
+    <Package Name="Create Tables" ConstraintMode="Parallel">
+      <Tasks>
+        <# foreach (var tableNode in RootNode.Tables) { #>
+        <ExecuteSQL Name="Create <#=tableNode.SchemaQualifiedName#>" ConnectionName="targetConnection">
+          <DirectInput><#=tableNode.GetDropAndCreateDdl()#></DirectInput>
+        </ExecuteSQL>
+        <# } #>
+      </Tasks>
+    </Package>
+  </Packages>
+</Biml>

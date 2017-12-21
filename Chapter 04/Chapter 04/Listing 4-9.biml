@@ -1,0 +1,22 @@
+<#@ template tier="1" #>
+<#
+  var includedSchemas = new List<string>{"Production"};
+  var includedTables = new List<string>{"Product", "ProductCategory", "ProductSubcategory"};
+	
+  var sourceConnection = RootNode.OleDbConnections["AW2014"];
+
+  var sourceMetadata = sourceConnection.GetDatabaseSchema(RootNode.Databases["Staging"], includedSchemas, includedTables, ImportOptions.ExcludeCheckConstraint | ImportOptions.ExcludeColumnDefault | ImportOptions.ExcludeForeignKey | ImportOptions.ExcludeIdentity | ImportOptions.ExcludeIndex | ImportOptions.ExcludePrimaryKey | ImportOptions.ExcludeUniqueKey | ImportOptions.ExcludeViews, true, null);
+#>
+
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Schemas>
+    <# foreach (var schema in sourceMetadata.SchemaNodes) { #>
+<#= schema.GetBiml()#>
+    <# } #>
+  </Schemas>
+  <Tables>
+    <# foreach (var tbl in sourceMetadata.TableNodes) { #>
+<#= tbl.GetBiml()#>
+    <# } #>
+  </Tables>
+</Biml>

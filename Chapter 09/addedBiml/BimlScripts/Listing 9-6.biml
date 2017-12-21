@@ -1,0 +1,10 @@
+﻿<# MD_ModelWrapper metadata = MD_ModelWrapper.Load(RootNode.Metadata["MD_Instance"]);  #>
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Tables>
+    <# foreach (var conn in metadata.Connections.Where(c => c.IsSource=="True")) { 
+       foreach (var tbl in metadata.Tables.Where(t => t.Connection.RelatedItem != null && t.Connection.RelatedItem.Name == conn.Name)) { #>
+    <Table Name="<#=tbl.Connection.RelatedItem.Name#>_<#=tbl.Name#>" SchemaName="Target.dbo"/>
+    <# } 
+     }#>
+  </Tables>
+</Biml>

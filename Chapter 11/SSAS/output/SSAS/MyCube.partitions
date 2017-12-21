@@ -1,0 +1,19 @@
+<Cube xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ddl2="http://schemas.microsoft.com/analysisservices/2003/engine/2" xmlns:ddl2_2="http://schemas.microsoft.com/analysisservices/2003/engine/2/2" xmlns:ddl100_100="http://schemas.microsoft.com/analysisservices/2008/engine/100/100" xmlns:dwd="http://schemas.microsoft.com/DataWarehouse/Designer/1.0" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+    <MeasureGroups>
+        <MeasureGroup>
+            <Partitions>
+                <Partition>
+                    <ID>Internet Sales Partition</ID>
+                    <Name>Internet Sales Partition</Name>
+                    <ErrorConfiguration />
+                    <Source xsi:type="DsvTableBinding">
+                        <DataSourceViewID>AdventureWorksDW</DataSourceViewID>
+                        <TableID>dbo_FactInternetSales</TableID>
+                    </Source>
+                </Partition>
+            </Partitions>
+            <ID>Internet Sales</ID>
+        </MeasureGroup>
+    </MeasureGroups>
+    <ID>MyCube</ID>
+</Cube>

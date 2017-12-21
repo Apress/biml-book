@@ -1,0 +1,9 @@
+<#@ template language="VB" optionexplicit="False" #>
+<# for each v in Rootnode.connections("CheckDB").GetDatabaseSchema.tablenodes.where(function(c) c.View IsNot Nothing)  
+try
+  ExternalDataAccess.GetDataTable(Rootnode.dbconnections("CheckDB").ConnectionString, "SELECT TOP 0 * from (" & v.view.selectsql & ") a")  #>
+  <#= v.name #>: OK
+<#catch ex as Exception #>
+  <#= v.name #>: <#= ex.message.replace(Environment.NewLine,", ") #>
+<#end try
+next #>

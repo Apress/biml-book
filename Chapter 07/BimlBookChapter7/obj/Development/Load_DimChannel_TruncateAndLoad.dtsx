@@ -1,0 +1,530 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="8/1/2017 2:37:18 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="VMDEMO"
+  DTS:CreatorName="A. Ray Leonard"
+  DTS:DTSID="{A19DBEBE-C7D4-4F7D-ADC6-CDF07B526B2B}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="14.0.0600.250"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="Load_DimChannel_TruncateAndLoad"
+  DTS:VersionGUID="{284E2249-2877-414A-B621-43E97A0FEC9C}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[ContosoSource]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{0D0DF549-C48A-4CF9-9179-10C27382D3A0}"
+      DTS:ObjectName="ContosoSource">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="data source=vmDemo\MBF;initial catalog=ContosoOLTP;provider=SQLNCLI11;integrated security=SSPI;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[ContosoTarget]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{24AD0812-9BE4-477A-B16A-293F8C4C0026}"
+      DTS:ObjectName="ContosoTarget">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="data source=vmDemo\MBF;initial catalog=ContosoRetailDW;provider=SQLNCLI11;integrated security=SSPI;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\DFT Load DimChannel"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:DTSID="{2EF39260-38E0-423A-B3D7-63B79167A954}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DFT Load DimChannel"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          BLOBTempStoragePath=""
+          bufferTempStoragePath=""
+          version="1">
+          <components>
+            <component
+              refId="Package\DFT Load DimChannel\DER ETL Instrumentation"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              name="DER ETL Instrumentation"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\DFT Load DimChannel\DER ETL Instrumentation.Inputs[OLEDBSrc Channel_Output_DER ETL Instrumentation]"
+                  name="OLEDBSrc Channel_Output_DER ETL Instrumentation">
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT Load DimChannel\DER ETL Instrumentation.Outputs[Output]"
+                  exclusionGroup="1"
+                  name="Output"
+                  synchronousInputId="Package\DFT Load DimChannel\DER ETL Instrumentation.Inputs[OLEDBSrc Channel_Output_DER ETL Instrumentation]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT Load DimChannel\DER ETL Instrumentation.Outputs[Output].Columns[ETLLoadID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\DFT Load DimChannel\DER ETL Instrumentation.Outputs[Output].Columns[ETLLoadID]"
+                      name="ETLLoadID"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_I4)@[System::ServerExecutionID]</property>
+                        <property
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_I4)@[System::ServerExecutionID]</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT Load DimChannel\DER ETL Instrumentation.Outputs[Output].Columns[LoadDate]"
+                      dataType="dbDate"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\DFT Load DimChannel\DER ETL Instrumentation.Outputs[Output].Columns[LoadDate]"
+                      name="LoadDate"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">@[System::StartTime]</property>
+                        <property
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">@[System::StartTime]</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DFT Load DimChannel\DER ETL Instrumentation.Outputs[Error]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Error"
+                  synchronousInputId="Package\DFT Load DimChannel\DER ETL Instrumentation.Inputs[OLEDBSrc Channel_Output_DER ETL Instrumentation]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT Load DimChannel\DER ETL Instrumentation.Outputs[Error].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT Load DimChannel\DER ETL Instrumentation.Outputs[Error].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT Load DimChannel\DER ETL Instrumentation.Outputs[Error].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT Load DimChannel\DER ETL Instrumentation.Outputs[Error].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT Load DimChannel\OLEDBDest DimChannel"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              name="OLEDBDest DimChannel"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[DimChannel]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DFT Load DimChannel\OLEDBDest DimChannel.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[ContosoTarget]"
+                  connectionManagerRefId="Package.ConnectionManagers[ContosoTarget]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\DFT Load DimChannel\OLEDBDest DimChannel.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimChannel]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="DER ETL Instrumentation_Output_OLEDBDest DimChannel">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DFT Load DimChannel\OLEDBDest DimChannel.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimChannel].Columns[ETLLoadID]"
+                      cachedDataType="i4"
+                      cachedName="ETLLoadID"
+                      externalMetadataColumnId="Package\DFT Load DimChannel\OLEDBDest DimChannel.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimChannel].ExternalColumns[ETLLoadID]"
+                      lineageId="Package\DFT Load DimChannel\DER ETL Instrumentation.Outputs[Output].Columns[ETLLoadID]" />
+                    <inputColumn
+                      refId="Package\DFT Load DimChannel\OLEDBDest DimChannel.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimChannel].Columns[LoadDate]"
+                      cachedDataType="dbDate"
+                      cachedName="LoadDate"
+                      externalMetadataColumnId="Package\DFT Load DimChannel\OLEDBDest DimChannel.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimChannel].ExternalColumns[LoadDate]"
+                      lineageId="Package\DFT Load DimChannel\DER ETL Instrumentation.Outputs[Output].Columns[LoadDate]" />
+                    <inputColumn
+                      refId="Package\DFT Load DimChannel\OLEDBDest DimChannel.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimChannel].Columns[Label]"
+                      cachedDataType="wstr"
+                      cachedLength="100"
+                      cachedName="Label"
+                      externalMetadataColumnId="Package\DFT Load DimChannel\OLEDBDest DimChannel.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimChannel].ExternalColumns[ChannelLabel]"
+                      lineageId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Output].Columns[Label]" />
+                    <inputColumn
+                      refId="Package\DFT Load DimChannel\OLEDBDest DimChannel.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimChannel].Columns[Name]"
+                      cachedDataType="wstr"
+                      cachedLength="20"
+                      cachedName="Name"
+                      externalMetadataColumnId="Package\DFT Load DimChannel\OLEDBDest DimChannel.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimChannel].ExternalColumns[ChannelName]"
+                      lineageId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Output].Columns[Name]" />
+                    <inputColumn
+                      refId="Package\DFT Load DimChannel\OLEDBDest DimChannel.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimChannel].Columns[Description]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="Description"
+                      externalMetadataColumnId="Package\DFT Load DimChannel\OLEDBDest DimChannel.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimChannel].ExternalColumns[ChannelDescription]"
+                      lineageId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Output].Columns[Description]" />
+                    <inputColumn
+                      refId="Package\DFT Load DimChannel\OLEDBDest DimChannel.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimChannel].Columns[LastUpdatedDate]"
+                      cachedDataType="dbDate"
+                      cachedName="LastUpdatedDate"
+                      externalMetadataColumnId="Package\DFT Load DimChannel\OLEDBDest DimChannel.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimChannel].ExternalColumns[UpdateDate]"
+                      lineageId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Output].Columns[LastUpdatedDate]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\DFT Load DimChannel\OLEDBDest DimChannel.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimChannel].ExternalColumns[ChannelKey]"
+                      dataType="i4"
+                      name="ChannelKey" />
+                    <externalMetadataColumn
+                      refId="Package\DFT Load DimChannel\OLEDBDest DimChannel.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimChannel].ExternalColumns[ChannelLabel]"
+                      dataType="wstr"
+                      length="100"
+                      name="ChannelLabel" />
+                    <externalMetadataColumn
+                      refId="Package\DFT Load DimChannel\OLEDBDest DimChannel.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimChannel].ExternalColumns[ChannelName]"
+                      dataType="wstr"
+                      length="20"
+                      name="ChannelName" />
+                    <externalMetadataColumn
+                      refId="Package\DFT Load DimChannel\OLEDBDest DimChannel.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimChannel].ExternalColumns[ChannelDescription]"
+                      dataType="wstr"
+                      length="50"
+                      name="ChannelDescription" />
+                    <externalMetadataColumn
+                      refId="Package\DFT Load DimChannel\OLEDBDest DimChannel.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimChannel].ExternalColumns[ETLLoadID]"
+                      dataType="i4"
+                      name="ETLLoadID" />
+                    <externalMetadataColumn
+                      refId="Package\DFT Load DimChannel\OLEDBDest DimChannel.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimChannel].ExternalColumns[LoadDate]"
+                      dataType="dbTimeStamp"
+                      name="LoadDate" />
+                    <externalMetadataColumn
+                      refId="Package\DFT Load DimChannel\OLEDBDest DimChannel.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimChannel].ExternalColumns[UpdateDate]"
+                      dataType="dbTimeStamp"
+                      name="UpdateDate" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT Load DimChannel\OLEDBDest DimChannel.Outputs[Error]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Error"
+                  synchronousInputId="Package\DFT Load DimChannel\OLEDBDest DimChannel.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimChannel]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT Load DimChannel\OLEDBDest DimChannel.Outputs[Error].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT Load DimChannel\OLEDBDest DimChannel.Outputs[Error].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT Load DimChannel\OLEDBDest DimChannel.Outputs[Error].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT Load DimChannel\OLEDBDest DimChannel.Outputs[Error].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT Load DimChannel\OLEDBSrc Channel"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              name="OLEDBSrc Channel"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [Label]
+,[Name]
+,[Description]
+,[LastUpdatedDate]
+FROM [dbo].[Channel]
+</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DFT Load DimChannel\OLEDBSrc Channel.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[ContosoSource]"
+                  connectionManagerRefId="Package.ConnectionManagers[ContosoSource]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Output]"
+                  name="Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Output].Columns[Label]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Output].ExternalColumns[Label]"
+                      length="100"
+                      lineageId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Output].Columns[Label]"
+                      name="Label"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Output].Columns[Name]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Output].ExternalColumns[Name]"
+                      length="20"
+                      lineageId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Output].Columns[Name]"
+                      name="Name"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Output].Columns[Description]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Output].ExternalColumns[Description]"
+                      length="50"
+                      lineageId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Output].Columns[Description]"
+                      name="Description"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Output].Columns[LastUpdatedDate]"
+                      dataType="dbDate"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Output].ExternalColumns[LastUpdatedDate]"
+                      lineageId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Output].Columns[LastUpdatedDate]"
+                      name="LastUpdatedDate"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Output].ExternalColumns[Label]"
+                      dataType="wstr"
+                      length="100"
+                      name="Label" />
+                    <externalMetadataColumn
+                      refId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Output].ExternalColumns[Name]"
+                      dataType="wstr"
+                      length="20"
+                      name="Name" />
+                    <externalMetadataColumn
+                      refId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Output].ExternalColumns[Description]"
+                      dataType="wstr"
+                      length="50"
+                      name="Description" />
+                    <externalMetadataColumn
+                      refId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Output].ExternalColumns[LastUpdatedDate]"
+                      dataType="dbDate"
+                      name="LastUpdatedDate" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Error]"
+                  isErrorOut="true"
+                  name="Error">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Error].Columns[Label]"
+                      dataType="wstr"
+                      length="100"
+                      lineageId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Error].Columns[Label]"
+                      name="Label" />
+                    <outputColumn
+                      refId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Error].Columns[Name]"
+                      dataType="wstr"
+                      length="20"
+                      lineageId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Error].Columns[Name]"
+                      name="Name" />
+                    <outputColumn
+                      refId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Error].Columns[Description]"
+                      dataType="wstr"
+                      length="50"
+                      lineageId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Error].Columns[Description]"
+                      name="Description" />
+                    <outputColumn
+                      refId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Error].Columns[LastUpdatedDate]"
+                      dataType="dbDate"
+                      lineageId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Error].Columns[LastUpdatedDate]"
+                      name="LastUpdatedDate" />
+                    <outputColumn
+                      refId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Error].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Error].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Error].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Error].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\DFT Load DimChannel.Paths[DER ETL Instrumentation_Output_OLEDBDest DimChannel]"
+              endId="Package\DFT Load DimChannel\OLEDBDest DimChannel.Inputs[DER ETL Instrumentation_Output_OLEDBDest DimChannel]"
+              name="DER ETL Instrumentation_Output_OLEDBDest DimChannel"
+              startId="Package\DFT Load DimChannel\DER ETL Instrumentation.Outputs[Output]" />
+            <path
+              refId="Package\DFT Load DimChannel.Paths[OLEDBSrc Channel_Output_DER ETL Instrumentation]"
+              endId="Package\DFT Load DimChannel\DER ETL Instrumentation.Inputs[OLEDBSrc Channel_Output_DER ETL Instrumentation]"
+              name="OLEDBSrc Channel_Output_DER ETL Instrumentation"
+              startId="Package\DFT Load DimChannel\OLEDBSrc Channel.Outputs[Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SQL Truncate Target"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{980AE525-8122-497E-AD2B-3FA2DCB3FA74}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SQL Truncate Target"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{24AD0812-9BE4-477A-B16A-293F8C4C0026}"
+          SQLTask:SqlStatementSource="Truncate Table [dbo].[DimChannel]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_SQL Truncate Target_To_DFT Load DimChannel]"
+      DTS:CreationName=""
+      DTS:DTSID="{7DC25372-CCB9-4B75-8E57-AFB51E26F518}"
+      DTS:From="Package\SQL Truncate Target"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_SQL Truncate Target_To_DFT Load DimChannel"
+      DTS:To="Package\DFT Load DimChannel" />
+  </DTS:PrecedenceConstraints>
+</DTS:Executable>

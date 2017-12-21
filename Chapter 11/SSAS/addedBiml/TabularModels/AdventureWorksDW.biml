@@ -1,0 +1,31 @@
+﻿<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <TabularModels>
+    <TabularModel Name="AdventureWorksDW" OutputLabel="AdventureWorksDW-SalesQuota"> 
+      <Tables>
+        <Table TabularTableName="AdventureWorksDW.dbo.DimDate.DimDate" OutputLabel="Date" />
+        <Table TabularTableName="AdventureWorksDW.dbo.DimEmployee.DimEmployee" OutputLabel="Employee" />
+        <Table TabularTableName="AdventureWorksDW.dbo.FactSalesQuota.SalesAmountQuota" />
+      </Tables>
+      <Relationships>
+        <Relationship TabularColumnName="AdventureWorksDW.dbo.FactSalesQuota.SalesAmountQuota.DateKey" TargetTabularColumnName="AdventureWorksDW.dbo.DimDate.DimDate.DateKey" />
+        <Relationship TabularColumnName="AdventureWorksDW.dbo.FactSalesQuota.SalesAmountQuota.EmployeeKey" TargetTabularColumnName="AdventureWorksDW.dbo.DimEmployee.DimEmployee.EmployeeKey" />
+      </Relationships>
+      <Perspectives>
+        <Perspective Name="Limited Employee Data" >
+          <Tables>
+            <Table TabularTableName="AdventureWorksDW.dbo.DimDate.DimDate" IncludeAllColumns="true" />
+            <Table TabularTableName="AdventureWorksDW.dbo.DimEmployee.DimEmployee" >
+              <Columns>
+                <Column TabularColumnName="AdventureWorksDW.dbo.DimEmployee.DimEmployee.EmployeeKey" />
+                <Column TabularColumnName="AdventureWorksDW.dbo.DimEmployee.DimEmployee.ParentEmployeeKey" />
+                <Column TabularColumnName="AdventureWorksDW.dbo.DimEmployee.DimEmployee.SalesTerritoryKey" />
+                <Column TabularColumnName="AdventureWorksDW.dbo.DimEmployee.DimEmployee.DepartmentName" />
+              </Columns>
+            </Table>
+            <Table TabularTableName="AdventureWorksDW.dbo.FactSalesQuota.SalesAmountQuota" IncludeAllColumns="true" />
+          </Tables>
+        </Perspective>
+      </Perspectives>
+    </TabularModel>
+  </TabularModels>
+</Biml>

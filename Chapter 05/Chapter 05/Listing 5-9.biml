@@ -1,0 +1,44 @@
+<#@ property name="table" type="AstTableNode" #> 
+<#@ property name="adminConnection" type="String" #>
+<#@ property name="sourceConnection" type="String" #>
+<#@ property name="destinationConnection" type="String" #>
+<#@ property name="destinationSchema" type="String" #>
+<#@ property name="includeLogRows" type="Boolean" #>
+	
+<Package Name="Load_<#=destinationSchema#>_<#=table.Schema#>_<#=table.Name#>" ConstraintMode="Linear">
+  <Variables>
+    <Variable Name="NewRows" DataType="Int32">0</Variable>
+  </Variables>
+  <Tasks>
+    <ExecuteSQL Name="SQL Truncate <#=table.Schema#> <#=table.Name#>" ConnectionName="<#=destinationConnection#>">
+			<DirectInput>TRUNCATE TABLE <#=destinationSchema#>.<#=table.Schema#>_<#=table.Name#>
+			</DirectInput>
+    </ExecuteSQL>
+    <Dataflow Name="Load <#=table.Schema#> <#=table.Name#>">
+      <Transformations>
+        <OleDbSource Name="Source <#=table.Schema#> <#=table.Name#>" ConnectionName="<#=sourceConnection#>">
+          <ExternaltableInput table="<#=table.SchemaQualifiedName#>" />
+        </OleDbSource>
+        <DerivedColumns Name="Add LoadDate">
+          <Columns>
+            <Column Name="LoadDate" DataType="DateTime">@[System::StartTime]</Column>
+          </Columns>
+        </DerivedColumns>
+        <RowCount Name="Count NewRows" VariableName="User.NewRows" />
+        <OleDbDestination Name="Destination <#=table.Schema#> <#=table.Name#>" ConnectionName="<#=destinationConnection#>">
+          <ExternaltableOutput table="<#=destinationSchema#>.<#=table.Schema#>_<#=table.Name#>" />
+        </OleDbDestination>
+      </Transformations>
+    </Dataflow>
+    <# if (includeLogRows) { #>
+      <ExecuteSQL Name="Log Rows" ConnectionName="<#=adminConnection#>">
+	  <DirectInput>INSERT INTO dbo.SSISLog (StartTime, PackageName, NewRows) VALUES (?, ?, ?)</DirectInput>
+        <Parameters>
+          <Parameter Name="0" VariableName="System.StartTime" DataType="DateTime2" Length="-1" />
+          <Parameter Name="1" VariableName="System.PackageName" DataType="AnsiString" Length="-1" />
+          <Parameter Name="2" VariableName="User.NewRows" DataType="Int32" Length="-1" />
+        </Parameters>
+      </ExecuteSQL>
+    <# } #>
+  </Tasks>
+</Package>

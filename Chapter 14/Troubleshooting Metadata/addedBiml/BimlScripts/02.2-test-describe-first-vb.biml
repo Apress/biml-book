@@ -1,0 +1,26 @@
+﻿<#@ template language="VB" optionexplicit="False"#>
+<#@ code file="..\Code\DataTableExtensionsVb.vb" #>
+<#@ import namespace="System.Data" #>
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+<#
+Dim storedProcedure = "[dbo].[uspGetEmployeeManagers]"
+Dim connection = "Provider=SQLNCLI11;Server=localhost;Initial Catalog=AdventureWorks2014;Integrated Security=SSPI"
+Dim dataTable as DataTable = ExternalDataAccess.GetDataTable(connection, "
+SELECT 'dbo'AS TABLE_SCHEMA
+      ,'EmployeeManagers'AS TABLE_NAME
+      ,f.name AS COLUMN_NAME
+      ,f.is_nullable AS IS_NULLABLE
+      ,t.name AS DATA_TYPE
+      ,f.max_length AS CHARACTER_MAXIMUM_LENGTH
+      ,f.precision AS NUMERIC_PRECISION
+      ,f.scale AS NUMERIC_SCALE
+FROM sys.dm_exec_describe_first_result_set('EXEC " + storedProcedure + " 30', null, 0) AS f
+LEFT OUTER JOIN sys.types AS t 
+ON t.user_type_id = f.system_type_id
+")
+#>
+    <Tables>
+        <#=dataTable.ToAstTableNode().GetBiml()#>
+    </Tables>
+</Biml>
+

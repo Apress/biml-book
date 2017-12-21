@@ -1,0 +1,5 @@
+<#
+string SSISFrameworkMetadataFileName = "E:\\output\\SSISFrameworkMetadata.sql";
+string SSISFrameworkApplicationName = "Biml Book Chapter 12";
+string SSISCatalogFolderName = "Test";
+#>

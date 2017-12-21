@@ -1,0 +1,12 @@
+﻿<#@ template language="VB" #>
+<#@ import namespace="Varigence.DynamicObjects.MD_ModelWrapper" #>
+<# Dim Metadata as MD_ModelWrapper = MD_ModelWrapper.Load(RootNode.Metadata("MD_Instance"))  #>
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Tables>
+    <# for each conn as ConnectionsWrapper in Metadata.Connections.where(function(c) c.IsSource= True)#>
+    <# for each tbl as TablesWrapper in  metadata.tables.where(function(t) t.Connection.RelatedItem isnot nothing ANDALSO t.Connection.RelatedItem.Name = conn.Name) #>
+    <Table Name="<#=tbl.Connection.RelatedItem.Name#>_<#=tbl.name#>" SchemaName="Target.dbo"/>
+    <# next #>
+    <# next #>
+  </Tables>
+</Biml>

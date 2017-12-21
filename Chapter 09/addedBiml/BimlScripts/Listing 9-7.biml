@@ -1,0 +1,51 @@
+﻿<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Metadata>
+    <MetadataModel Name="BRMetadataModel">
+      <Entities>
+        <Entity Name="Connections">
+          <Properties>
+            <Property Name="ConnectionString" DataType="String" Length="255" />
+          </Properties>
+        </Entity>
+        <Entity Name="Databases">
+          <Relationships>
+            <Relationship Name="Connection" EntityName="Connections" Cardinality="ManyToOne" />
+          </Relationships>
+        </Entity>
+        <Entity Name="Schemas">
+          <Relationships>
+            <Relationship Name="Database" EntityName="Databases" Cardinality="ManyToOne" />
+          </Relationships>
+        </Entity>
+        <Entity Name="Tables">
+          <Relationships>
+            <Relationship Name="Schema" EntityName="Schemas" Cardinality="ManyToOne" />
+          </Relationships>
+          <Properties>
+            <Property Name="PatternName" DataType="String" Length="255" />
+          </Properties>
+        </Entity>
+        <Entity Name="Columns">
+          <Relationships>
+            <Relationship Name="Table" EntityName="Tables" Cardinality="ManyToOne" />
+          </Relationships>
+          <Properties>
+            <Property Name="DataType" DataType="String" Length="255" />
+            <Property Name="Length" DataType="Int32" />
+            <Property Name="IsNullable" DataType="Boolean" />
+            <Property Name="IsIdentity" DataType="Boolean" />
+          </Properties>
+        </Entity>
+        <Entity Name="Mappings">
+          <Relationships>
+            <Relationship Name="SourceColumn" EntityName="BRMetadataModel.Columns" Cardinality="OneToMany" />
+            <Relationship Name="TargetColumn" EntityName="BRMetadataModel.Columns" Cardinality="OneToMany" />
+          </Relationships>
+          <Properties>
+            <Property Name="IsBusinessKey" DataType="Boolean" />
+          </Properties>
+        </Entity>
+      </Entities>
+    </MetadataModel>
+  </Metadata>
+</Biml>

@@ -1,0 +1,91 @@
+﻿<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+	<Tables>
+		<Table Name="DimDate" SchemaName="AdventureWorksDW.dbo" FriendlyName="Date">
+			<Columns>
+				<Column Name="DateKey" DataType="Int32" IsNullable="false" />
+				<Column Name="FullDateAlternateKey" DataType="Date" IsNullable="false" />
+				<Column Name="DayNumberOfWeek" DataType="Byte" IsNullable="false" />
+				<Column Name="EnglishDayNameOfWeek" DataType="String" Length="10" IsNullable="false" />
+				<Column Name="SpanishDayNameOfWeek" DataType="String" Length="10" IsNullable="false" />
+				<Column Name="FrenchDayNameOfWeek" DataType="String" Length="10" IsNullable="false" />
+				<Column Name="DayNumberOfMonth" DataType="Byte" IsNullable="false" />
+				<Column Name="DayNumberOfYear" DataType="Int16" IsNullable="false" />
+				<Column Name="WeekNumberOfYear" DataType="Byte" IsNullable="false" />
+				<Column Name="EnglishMonthName" DataType="String" Length="10" IsNullable="false" />
+				<Column Name="SpanishMonthName" DataType="String" Length="10" IsNullable="false" />
+				<Column Name="FrenchMonthName" DataType="String" Length="10" IsNullable="false" />
+				<Column Name="MonthNumberOfYear" DataType="Byte" IsNullable="false" />
+				<Column Name="CalendarQuarter" DataType="Byte" IsNullable="false" />
+				<Column Name="CalendarYear" DataType="Int16" IsNullable="false" />
+				<Column Name="CalendarSemester" DataType="Byte" IsNullable="false" />
+				<Column Name="FiscalQuarter" DataType="Byte" IsNullable="false" />
+				<Column Name="FiscalYear" DataType="Int16" IsNullable="false" />
+				<Column Name="FiscalSemester" DataType="Byte" IsNullable="false" />
+			</Columns>
+			<Keys>
+				<PrimaryKey Name="PK_DimDate_DateKey">
+					<Columns>
+						<Column ColumnName="DateKey" />
+					</Columns>
+				</PrimaryKey>
+			</Keys>
+			<AnalysisMetadata>
+				<Dimension Name="Date" DimensionType="Time">
+					<Attributes>
+						<Attribute Usage="Key" Name="Date" AttributeType="Date">
+							<KeyColumns>
+								<KeyColumn ColumnName="DateKey" />
+							</KeyColumns>
+							<NameColumn ColumnName="FullDateAlternateKey" />
+						</Attribute>
+						<Attribute Name="Month Name" AttributeType="Months">
+							<KeyColumns>
+								<KeyColumn ColumnName="CalendarYear" />
+								<KeyColumn ColumnName="MonthNumberOfYear" />
+							</KeyColumns>
+							<NameColumn ColumnName="EnglishMonthName" />
+						</Attribute>
+						<Attribute Name="Calendar Year" AttributeType="Years">
+							<KeyColumns>
+								<KeyColumn ColumnName="CalendarYear" />
+							</KeyColumns>
+							<NameColumn ColumnName="CalendarYear" />
+						</Attribute>
+					</Attributes>
+					<Relationships>
+						<Relationship Name="Month Name" ParentAttributeName="Date" ChildAttributeName="Month Name" />
+						<Relationship Name="Calendar Year" ParentAttributeName="Month Name" ChildAttributeName="Calendar Year" />
+					</Relationships>
+					<AttributeHierarchies>
+						<Hierarchy Name="Calendar">
+							<Levels>
+								<Level Name="Year" AttributeName="Calendar Year" />
+								<Level Name="Month" AttributeName="Month Name" />
+								<Level Name="Date" AttributeName="Date" />
+							</Levels>
+						</Hierarchy>
+					</AttributeHierarchies>
+				</Dimension>
+				<Tabular Name="DimDate" AutoCreateSinglePartition="true" >
+					<Columns>
+						<Column Name="DateKey" SourceColumnName="DateKey" IsHidden="true" />
+						<Column Name="FullDateAlternateKey" SourceColumnName="FullDateAlternateKey" />
+						<Column Name="DayNumberOfWeek" SourceColumnName="DayNumberOfWeek" />
+						<Column Name="EnglishDayNameOfWeek" SourceColumnName="EnglishDayNameOfWeek" SortByColumnName="AdventureWorksDW.dbo.DimDate.DayNumberOfWeek" />
+						<Column Name="DayNumberOfMonth" SourceColumnName="DayNumberOfMonth" />
+						<Column Name="DayNumberOfYear" SourceColumnName="DayNumberOfYear" />
+						<Column Name="WeekNumberOfYear" SourceColumnName="WeekNumberOfYear" />
+						<Column Name="EnglishMonthName" SourceColumnName="EnglishMonthName" />
+						<Column Name="MonthNumberOfYear" SourceColumnName="MonthNumberOfYear" />
+						<Column Name="CalendarQuarter" SourceColumnName="CalendarQuarter" />
+						<Column Name="CalendarYear" SourceColumnName="CalendarYear" />
+						<Column Name="CalendarSemester" SourceColumnName="CalendarSemester" />
+						<Column Name="FiscalQuarter" SourceColumnName="FiscalQuarter" />
+						<Column Name="FiscalYear" SourceColumnName="FiscalYear" />
+						<Column Name="FiscalSemester" SourceColumnName="FiscalSemester" />
+					</Columns>
+				</Tabular>
+			</AnalysisMetadata>
+		</Table>
+	</Tables>
+</Biml>

@@ -1,0 +1,56 @@
+﻿<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Tables>
+    <Table Name="DimSalesTerritory" SchemaName="AdventureWorksDW.dbo" FriendlyName="Sales Territory" >
+      <Columns>
+        <Column Name="SalesTerritoryKey" />
+        <Column Name="SalesTerritoryRegion" DataType="String" Length="50" />
+        <Column Name="SalesTerritoryCountry" DataType="String" Length="50" />
+        <Column Name="SalesTerritoryGroup" DataType="String" Length="50" IsNullable="true" />
+      </Columns>
+      <Keys>
+        <Identity Name="PK_DimSalesTerritory_SalesTerritoryKey">
+          <Columns>
+            <Column ColumnName="SalesTerritoryKey" />
+          </Columns>
+        </Identity>
+      </Keys>
+      <AnalysisMetadata>
+        <Dimension Name="Sales Territory"  AttributeAllMemberName="All Sales Territories">
+          <Attributes>
+            <Attribute Name="Sales Territory Region" OrderBy="Name" Usage="Key"> 
+              <KeyColumns>
+                <KeyColumn ColumnName="SalesTerritoryKey" />
+              </KeyColumns>
+              <NameColumn ColumnName="SalesTerritoryRegion" />
+            </Attribute>
+            <Attribute Name="Sales Territory Group" OrderBy="Name">
+              <KeyColumns>
+                <KeyColumn ColumnName="SalesTerritoryGroup" />
+              </KeyColumns>
+              <NameColumn ColumnName="SalesTerritoryGroup" />
+            </Attribute>
+            <Attribute Name="Sales Territory Country" OrderBy="Name">
+              <KeyColumns>
+                <KeyColumn ColumnName="SalesTerritoryCountry" />
+              </KeyColumns>
+              <NameColumn ColumnName="SalesTerritoryCountry" />
+            </Attribute>
+          </Attributes>
+          <AttributeHierarchies>
+            <Hierarchy Name="Sales Territory">
+              <Levels>
+                <Level Name="Group" AttributeName="Sales Territory Group" />
+                <Level Name="Country" AttributeName="Sales Territory Country" />
+                <Level Name="Region" AttributeName="Sales Territory Region" />
+              </Levels>
+            </Hierarchy>
+          </AttributeHierarchies>
+          <Relationships>
+            <Relationship Name="Sales Territory Country" ParentAttributeName="Sales Territory Region" ChildAttributeName="Sales Territory Country" />
+            <Relationship Name="Sales Territory Group" ParentAttributeName="Sales Territory Country" ChildAttributeName="Sales Territory Group" />
+          </Relationships>
+        </Dimension>
+      </AnalysisMetadata>
+    </Table>
+  </Tables>
+</Biml>

@@ -1,0 +1,25 @@
+<# 
+  var destinationSchema = "AW2014";
+  var sourceConnection = SchemaManager.CreateConnectionNode("Source", @"Data Source=.;Initial Catalog=AdventureWorks2014;Provider=SQLNCLI11;Integrated Security=SSPI;");
+  var sourceMetadata = sourceConnection.GetDatabaseSchema(ImportOptions.ExcludeViews);
+#>
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+  <Connections>
+    <OleDbConnection Name="Admin" ConnectionString="Data Source=.;Initial Catalog=Admin;Provider=SQLNCLI11;Integrated Security=SSPI;" />
+    <OleDbConnection Name="AW2014" ConnectionString="Data Source=.;Initial Catalog=AdventureWorks2014;Provider=SQLNCLI11;Integrated Security=SSPI;" />
+    <OleDbConnection Name="Staging" ConnectionString="Data Source=.;Initial Catalog=Staging;Provider=SQLNCLI11;Integrated Security=SSPI;" />
+  </Connections>
+  <Packages>
+    <# foreach (var table in sourceMetadata.TableNodes) { #>
+      <#=CallBimlScript(
+	  "Callee.biml",
+	  table,      /* Table */
+	  "Admin",    /* AdminConnection */
+	  "AW2014",   /* SourceConnection */
+	  "Staging",  /* DestinationConnection */
+	  "AW2014",   /* DestinationSchema */
+	  true        /* IncludeLogRows */
+      )#>
+    <# } #>
+  </Packages>
+</Biml>

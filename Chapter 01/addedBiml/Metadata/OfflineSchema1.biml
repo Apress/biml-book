@@ -1,0 +1,5 @@
+﻿<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+    <Metadata>
+        <OfflineSchema Name="OfflineSchema1" />
+    </Metadata>
+</Biml>

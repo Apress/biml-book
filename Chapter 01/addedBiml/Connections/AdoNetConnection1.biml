@@ -1,0 +1,9 @@
+﻿<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+    <Connections>
+        <AdoNetConnection
+		Name="AdoNetConnection1"
+		Provider="System.Data.Odbc"
+		ConnectionString="server=server1;database=foo;Integrated Security=true" />
+    </Connections>
+</Biml>
+
